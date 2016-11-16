@@ -1,4 +1,4 @@
-USE MCGYVER
+USE BAR
 
 INSERT INTO UnitTypes (type_name) VALUES
   ('vol'),
@@ -9,4 +9,3 @@ INSERT INTO Units (unit_name, convert_factor, unit_type) VALUES
   ('dekagram', 100, 2),
   ('litr', 1, 1),
   ('mililitr', 1000, 1)
-

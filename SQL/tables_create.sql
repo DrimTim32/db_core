@@ -1,4 +1,4 @@
-USE MCGYVER
+USE BAR
 
 CREATE TABLE UnitTypes (
   id        INT PRIMARY KEY IDENTITY (1, 1),

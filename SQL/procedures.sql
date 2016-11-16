@@ -1,4 +1,4 @@
-USE MCGYVER
+USE BAR
 
 CREATE PROCEDURE addUnit
     @unit_name      NVARCHAR(32),
@@ -13,3 +13,13 @@ AS BEGIN
         (@unit_name, @convert_factor, @unit_type)
     END
 END
+GO
+
+
+CREATE PROCEDURE deleteUnit
+    @unit_name NVARCHAR(32)
+AS BEGIN
+  DELETE FROM Units
+  WHERE unit_name = @unit_name
+END
+GO

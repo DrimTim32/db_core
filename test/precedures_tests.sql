@@ -1,5 +1,7 @@
-USE MCGYVER
+USE BAR
 
-EXEC addUnit 'hektodlitr', 0.01, 1
+EXEC addUnit 'hektolitr', 0.01, 1
 
 SELECT * from Units
+
+exec deleteUnit 'hektolitr'
