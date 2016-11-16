@@ -1,4 +1,4 @@
-USE BAR
+USE [1060_bar]
 
 EXEC addUnit 'hektolitr', 0.01, 1
 

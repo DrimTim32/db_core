@@ -1,4 +1,4 @@
-USE BAR
+USE [1060_bar]
 
 --------------------UNITS--------------------
 CREATE PROCEDURE addUnit
@@ -34,7 +34,7 @@ AS BEGIN
             FROM units
             WHERE id = @id)
     BEGIN
-      IF (@new_unit_name != '')
+      IF @new_unit_name != ''
         BEGIN
           UPDATE Units
           SET unit_name = @new_unit_name
@@ -48,7 +48,7 @@ AS BEGIN
           SET unit_type = @new_unit_type
           WHERE id = @id
         END
-      IF (@new_convert_factor > 0)
+      IF @new_convert_factor > 0
         BEGIN
           UPDATE Units
           SET convert_factor = @new_convert_factor
@@ -62,7 +62,8 @@ GO
 --------------------TAXES--------------------
 CREATE PROCEDURE addTax
     @tax_name  NVARCHAR(32),
-    @tax_value FLOAT AS BEGIN
+    @tax_value FLOAT
+AS BEGIN
   IF (SELECT COUNT(*)
       FROM Taxes
       WHERE tax_name = @tax_name) = 0
@@ -84,12 +85,13 @@ GO
 CREATE PROCEDURE updateTax
     @id            INT,
     @new_tax_name  NVARCHAR(32),
-    @new_tax_value FLOAT AS BEGIN
+    @new_tax_value FLOAT
+AS BEGIN
   IF EXISTS(SELECT *
             FROM Taxes
             WHERE id = @id)
     BEGIN
-      IF (@new_tax_name != '')
+      IF @new_tax_name != ''
         BEGIN
           UPDATE Taxes
           SET tax_name = @new_tax_name, tax_value = @new_tax_value
@@ -100,3 +102,21 @@ END
 GO
 
 --------------------CATEGORIES--------------------
+
+CREATE PROCEDURE addCategory
+    @id                  INT,
+    @category_name       NVARCHAR(64),
+    @slug                NVARCHAR(32),
+    @overriding_category INT
+AS BEGIN
+  IF (SELECT COUNT(*)
+      FROM Categories
+      WHERE id = @id) = 0 AND (@overriding_category = 0 OR @overriding_category != 0 AND
+                                                           EXIST(SELECT * FROM Categories WHERE
+                                                                 id = @overriding_category))
+    BEGIN
+      INSERT INTO Categories (id, category_name, slug, overriding_categpry) VALUES
+        (@id, @category_name, slug, overriding_categpry)
+    END
+
+END

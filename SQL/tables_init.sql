@@ -1,4 +1,4 @@
-USE BAR
+USE [1060_bar]
 
 INSERT INTO UnitTypes (type_name) VALUES
   ('vol'),
