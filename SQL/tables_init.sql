@@ -15,3 +15,18 @@ INSERT INTO Units (unit_name, convert_factor, unit_type) VALUES
 INSERT INTO Taxes(tax_name, tax_value) VALUES
   ('VAT 23 %', 0.23),
   ('VAT 7%', 0.08)
+  
+
+  -- dodawanie administratora 
+EXEC	[dbo].[AddEmployee]
+		@name = N'Marcin',
+		@surname = N'Malinowski',
+		@phone = N'+48123123123',
+		@position = 255
+		 
+
+exec  [dbo].[AddUserByInfo]
+		@password = N'qwerty',
+		@username = N'malin',
+		@name = 'Marcin',
+		@surname = 'Malinowski'
