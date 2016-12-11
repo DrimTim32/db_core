@@ -116,7 +116,7 @@ AS BEGIN
                                                                  id = @overriding_category))
     BEGIN
       INSERT INTO Categories (id, category_name, slug, overriding_categpry) VALUES
-        (@id, @category_name, slug, overriding_categpry)
+        (@id, @category_name, @slug, @overriding_categpry)
     END
 
 END
