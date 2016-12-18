@@ -1,4 +1,4 @@
-USE [1060_bar]
+USE BarProject
 
 --------------------UNITS--------------------
 CREATE PROCEDURE addUnit
@@ -195,3 +195,4 @@ AS BEGIN
     END
 
 END
+GO

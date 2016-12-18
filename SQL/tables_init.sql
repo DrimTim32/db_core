@@ -1,4 +1,9 @@
-USE [1060_bar]
+USE BarProject
+GO
+-- Dodawanie administratora systemu ( z niego ida zapytania do SQL)
+CREATE USER bar_admin WITH PASSWORD = ')5T+tdH,%8wK&<)' 
+GRANT EXECUTE TO bar_admin
+sp_addrolemember 'db_datawriter', bar_admin
 
 INSERT INTO UnitTypes (type_name) VALUES
   ('vol'),
@@ -16,8 +21,10 @@ INSERT INTO Taxes(tax_name, tax_value) VALUES
   ('VAT 23 %', 0.23),
   ('VAT 7%', 0.08)
   
+INSERT INTO EmployePermissions(name,id)
+VALUES (N'admin',255)
 
-  -- dodawanie administratora 
+  -- dodawanie osoby o podwyzszonych uprawnieniach 
 EXEC	[dbo].[AddEmployee]
 		@name = N'Marcin',
 		@surname = N'Malinowski',

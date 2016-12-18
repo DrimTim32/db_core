@@ -1,4 +1,4 @@
-USE [1060_bar]
+USE BarProject
 
 CREATE TABLE UnitTypes (
   id        INT PRIMARY KEY IDENTITY (1, 1),
@@ -25,15 +25,21 @@ CREATE TABLE Categories (
   overriding_categpry INT
 );
 
+CREATE TABLE EmployePermissions(
+  id TINYINT PRIMARY KEY,
+  name nvarchar(64) NOT NULL
+);
+
 CREATE TABLE Employees( 
-  id int PRIMARY KEY IDENTITY (1,1),
+  id INT PRIMARY KEY IDENTITY (1,1),
   name NVARCHAR(64) NOT NULL,
   surname NVARCHAR(64) NOT NULL, 
   phone NVARCHAR(30) NOT NULL,
-  position TINYINT NOT NULL,
+  position TINYINT FOREIGN KEY REFERENCES EmployePermissions(id) NOT NULL 
 );
+
 CREATE TABLE Users(
-  user_id INT FOREIGN KEY REFERENCES Employees(id),
+  id INT FOREIGN KEY REFERENCES Employees(id) NOT NULL, 
   username NVARCHAR(64) NOT NULL,
   password VARBINARY(20) NOT NULL,
   password_salt CHAR(25) NOT NULL
