@@ -103,7 +103,7 @@ AS
 					  END; 
 				  SET @PwdWithSalt = @Salt + @password;
 				INSERT INTO Users
-				(user_id,username,password,password_salt)
+				(id,username,password,password_salt)
 				VALUES
 				(@user_id,@username,HASHBYTES('SHA1', @PwdWithSalt),@Salt)
 			END
