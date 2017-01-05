@@ -1,4 +1,4 @@
-USE [1060_bar]
+USE BarProject
 
 INSERT INTO UnitTypes (type_name) VALUES
   ('vol'),

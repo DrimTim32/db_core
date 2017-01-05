@@ -1,4 +1,4 @@
-USE [1060_bar]
+USE BarProject
 
 CREATE TABLE UnitTypes (
   id        INT PRIMARY KEY IDENTITY (1, 1),
