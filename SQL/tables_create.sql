@@ -1,46 +1,19 @@
-USE BarProject
+USE BAR
 
 CREATE TABLE UnitTypes (
   id        INT PRIMARY KEY IDENTITY (1, 1),
-  type_name NVARCHAR(8) UNIQUE NOT NULL
+  type_name NVARCHAR(4) UNIQUE NOT NULL
 )
 
 CREATE TABLE Units (
   id             INT PRIMARY KEY IDENTITY (1, 1),
   unit_name      NVARCHAR(32) UNIQUE NOT NULL,
-  convert_factor FLOAT               NOT NULL,
+  convert_factor FLOAT             NOT NULL,
   unit_type      INT FOREIGN KEY REFERENCES UnitTypes (id)
 )
 
-CREATE TABLE Taxes (
-  id        INT PRIMARY KEY IDENTITY (1, 1),
-  tax_name  NVARCHAR(32),
-  tax_value FLOAT NOT NULL
-)
-
 CREATE TABLE Categories (
-  id                  INT PRIMARY KEY,
-  slug                NVARCHAR(32) UNIQUE NOT NULL,
+  id                  INT PRIMARY KEY IDENTITY (1, 1),
   category_name       NVARCHAR(64) UNIQUE NOT NULL,
   overriding_categpry INT
-);
-
-CREATE TABLE EmployePermissions(
-  id TINYINT PRIMARY KEY,
-  name nvarchar(64) NOT NULL
-);
-
-CREATE TABLE Employees( 
-  id INT PRIMARY KEY IDENTITY (1,1),
-  name NVARCHAR(64) NOT NULL,
-  surname NVARCHAR(64) NOT NULL, 
-  phone NVARCHAR(30) NOT NULL,
-  position TINYINT FOREIGN KEY REFERENCES EmployePermissions(id) NOT NULL 
-);
-
-CREATE TABLE Users(
-  id INT FOREIGN KEY REFERENCES Employees(id) NOT NULL, 
-  username NVARCHAR(64) NOT NULL,
-  password VARBINARY(20) NOT NULL,
-  password_salt CHAR(25) NOT NULL
 );
