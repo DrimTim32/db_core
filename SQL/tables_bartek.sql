@@ -25,12 +25,21 @@ CREATE TABLE Categories (
   overriding_category INT FOREIGN KEY REFERENCES Categories (id)
 )
 
-CREATE TABLE Articles (
+CREATE TABLE Products (
   id          INT PRIMARY KEY IDENTITY (1, 1),
   category_id INT FOREIGN KEY REFERENCES Categories (id),
   unit_type   INT FOREIGN KEY REFERENCES UnitTypes (id),
+  tax_id      INT FOREIGN KEY REFERENCES Taxes (id),
   name        NVARCHAR(128) NOT NULL,
-  tax         FLOAT
+)
+
+CREATE TABLE ProductsSold (
+  id         INT PRIMARY KEY FOREIGN KEY REFERENCES Products (id),
+  receipt_id INT FOREIGN KEY REFERENCES Receipts (id)
+)
+
+CREATE TABLE ProductsStored (
+  id INT PRIMARY KEY FOREIGN KEY REFERENCES Products (id)
 )
 
 CREATE TABLE Receipts (
@@ -40,7 +49,13 @@ CREATE TABLE Receipts (
 
 CREATE TABLE Ingredients (
   receipt_id    INT FOREIGN KEY REFERENCES Receipts (id),
-  ingredient_id INT FOREIGN KEY REFERENCES Articles (id),
+  ingredient_id INT FOREIGN KEY REFERENCES ProductsStored (id),
   quantity      FLOAT NOT NULL,
   PRIMARY KEY (receipt_id, ingredient_id)
+)
+
+CREATE TABLE Prices (
+  product_id   INT FOREIGN KEY REFERENCES ProductsSold (id),
+  period_start DATE NOT NULL,
+  PRIMARY KEY (product_id, period_start)
 )
