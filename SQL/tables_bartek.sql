@@ -18,11 +18,11 @@ CREATE TABLE Taxes (
   tax_value FLOAT NOT NULL
 )
 
-  CREATE TABLE Categories (
-  id                  INT PRIMARY KEY,
+CREATE TABLE Categories (
+  id                  INT PRIMARY KEY IDENTITY (1, 1),
   slug                NVARCHAR(32) UNIQUE NOT NULL,
   category_name       NVARCHAR(64) UNIQUE NOT NULL,
-  overriding_categpry INT
+  overriding_category INT FOREIGN KEY REFERENCES Categories (id)
 )
 
 CREATE TABLE Articles (
@@ -44,17 +44,3 @@ CREATE TABLE Ingredients (
   quantity      FLOAT NOT NULL,
   PRIMARY KEY (receipt_id, ingredient_id)
 )
-
-CREATE TABLE Employees (
-  id       INT PRIMARY KEY IDENTITY (1, 1),
-  name     NVARCHAR(64) NOT NULL,
-  surname  NVARCHAR(64) NOT NULL,
-  phone    NVARCHAR(30) NOT NULL,
-  position TINYINT      NOT NULL,
-);
-CREATE TABLE Users (
-  user_id       INT FOREIGN KEY REFERENCES Employees (id),
-  username      NVARCHAR(64)  NOT NULL,
-  password      VARBINARY(20) NOT NULL,
-  password_salt CHAR(25)      NOT NULL
-);
