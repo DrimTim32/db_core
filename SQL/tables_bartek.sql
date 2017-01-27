@@ -58,4 +58,3 @@ CREATE TABLE Prices (
   product_id   INT FOREIGN KEY REFERENCES ProductsSold (id),
   period_start DATE NOT NULL,
   PRIMARY KEY (product_id, period_start)
-)
