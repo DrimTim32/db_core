@@ -28,7 +28,7 @@ CREATE TABLE Categories (
 CREATE TABLE Products (
   id          INT PRIMARY KEY IDENTITY (1, 1),
   category_id INT FOREIGN KEY REFERENCES Categories (id),
-  unit_type   INT FOREIGN KEY REFERENCES UnitTypes (id),
+  unit_id     INT FOREIGN KEY REFERENCES Units (id),
   tax_id      INT FOREIGN KEY REFERENCES Taxes (id),
   name        NVARCHAR(128) NOT NULL,
 )
@@ -56,5 +56,7 @@ CREATE TABLE Ingredients (
 
 CREATE TABLE Prices (
   product_id   INT FOREIGN KEY REFERENCES ProductsSold (id),
-  period_start DATE NOT NULL,
+  period_start DATE  NOT NULL,
+  price        MONEY NOT NULL,
   PRIMARY KEY (product_id, period_start)
+)
