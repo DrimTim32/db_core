@@ -20,9 +20,12 @@ EXEC	@return_value = [dbo].[addUser]
 		@permission = 255 
 
 
-DECLARE	@return_value int
-EXEC @return_value = checkCredentials
+DECLARE	@return_value int,
+		@tmp_credentials smallint
+
+EXEC	@return_value = [dbo].[checkCredentials]
 		@username = N'malin',
-		@password = N'qwerty'
-print @return_value
-		
+		@password = N'qwerty',
+		@tmp_credentials = @tmp_credentials OUTPUT
+
+SELECT	@tmp_credentials as N'@tmp_credentials'
