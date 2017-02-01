@@ -3,8 +3,12 @@ USE BarProject
 
 INSERT INTO EmployePermissions(name,value)
 VALUES 
-(N'admin',255), (N'Owner',127), (N'Menager',36), 
-(N'WarehouseAdministrator',4), (N'Cook',2), (N'Waitresss',1)
+(N'admin',255), 
+(N'Owner',127),  
+(N'WarehouseAdministrator',16), 
+(N'Cook',2), 
+(N'Waitresss',1), 
+(N'NoUser',0)
 
 DECLARE	@return_value int
 
