@@ -14,8 +14,8 @@ CREATE TABLE Units (
 
 CREATE TABLE Taxes (
   id        INT PRIMARY KEY IDENTITY (1, 1),
-  tax_name  NVARCHAR(32),
-  tax_value FLOAT NOT NULL
+  tax_name  NVARCHAR(32) UNIQUE NOT NULL,
+  tax_value FLOAT               NOT NULL
 )
 
 CREATE TABLE Categories (
@@ -30,7 +30,7 @@ CREATE TABLE Products (
   category_id INT FOREIGN KEY REFERENCES Categories (id),
   unit_id     INT FOREIGN KEY REFERENCES Units (id),
   tax_id      INT FOREIGN KEY REFERENCES Taxes (id),
-  name        NVARCHAR(128) NOT NULL,
+  name        NVARCHAR(128) UNIQUE NOT NULL,
 )
 
 CREATE TABLE ProductsStored (
