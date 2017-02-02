@@ -121,8 +121,13 @@ GO
 --------------------PRODUCTS--------------------
 
 CREATE PROCEDURE addProduct
+    @category_id INT,
+    @unit_id     INT,
+    @tax_id      INT,
+    @name        NVARCHAR(128)
 AS BEGIN
-
+  INSERT INTO Products (category_id, unit_id, tax_id, name) VALUES
+    (@category_id, @unit_id, @tax_id, @name)
 END
 GO
 
@@ -139,7 +144,6 @@ AS BEGIN
 END
 GO
 
-
 CREATE PROCEDURE addSoldProduct
     @product_id INT,
     @receipt_id INT
@@ -148,6 +152,39 @@ AS BEGIN
     INSERT INTO ProductsSold (id, receipt_id) VALUES
       (@product_id, @receipt_id)
   END
+END
+GO
+
+CREATE PROCEDURE removeProduct
+    @product_id INT
+AS BEGIN
+  DELETE FROM Products
+  WHERE id = @product_id
+END
+GO
+
+CREATE PROCEDURE removeSoldProduct
+    @product_id INT
+AS BEGIN
+  DELETE FROM ProductsSold
+  WHERE id = @product_id
+END
+GO
+
+CREATE PROCEDURE removeStoredProduct
+    @product_id INT
+AS BEGIN
+  DELETE FROM ProductsStored
+  WHERE id = @product_id
+END
+GO
+
+CREATE PROCEDURE updatePrice
+    @priduct_id INT,
+    @new_price  FLOAT
+AS BEGIN
+  INSERT INTO Prices (product_id, period_start, price) VALUES
+    (@priduct_id, (SELECT CONVERT(DATE, GETDATE())), @new_price)
 END
 GO
 

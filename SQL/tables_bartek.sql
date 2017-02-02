@@ -34,7 +34,10 @@ CREATE TABLE Products (
 )
 
 CREATE TABLE ProductsStored (
-  id INT PRIMARY KEY FOREIGN KEY REFERENCES Products (id)
+  id INT PRIMARY KEY FOREIGN KEY REFERENCES Products (id),
+  CONSTRAINT fk_stored_base_prod
+  FOREIGN KEY (id) REFERENCES Products (id)
+    ON DELETE CASCADE
 )
 
 CREATE TABLE Receipts (
@@ -43,8 +46,11 @@ CREATE TABLE Receipts (
 )
 
 CREATE TABLE ProductsSold (
-  id         INT PRIMARY KEY FOREIGN KEY REFERENCES Products (id),
-  receipt_id INT FOREIGN KEY REFERENCES Receipts (id)
+  id         INT PRIMARY KEY,
+  receipt_id INT FOREIGN KEY REFERENCES Receipts (id),
+  CONSTRAINT fk_sold_base_prod
+  FOREIGN KEY (id) REFERENCES Products (id)
+    ON DELETE CASCADE
 )
 
 CREATE TABLE Ingredients (
