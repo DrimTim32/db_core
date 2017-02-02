@@ -1,18 +1,14 @@
 USE BarProject
 
 --------------------UNITS--------------------
+
 CREATE PROCEDURE addUnit
     @unit_name      NVARCHAR(32),
     @convert_factor FLOAT,
     @unit_type      INT
 AS BEGIN
-  IF (SELECT COUNT(*)
-      FROM Units
-      WHERE unit_name = @unit_name) = 0
-    BEGIN
-      INSERT INTO Units (unit_name, convert_factor, unit_type) VALUES
-        (@unit_name, @convert_factor, @unit_type)
-    END
+  INSERT INTO Units (unit_name, convert_factor, unit_type) VALUES
+    (@unit_name, @convert_factor, @unit_type)
 END
 GO
 
@@ -29,31 +25,21 @@ CREATE PROCEDURE updateUnit
     @new_unit_name      NVARCHAR(32),
     @new_convert_factor FLOAT,
     @new_unit_type      INT
-AS BEGIN
-  IF EXISTS(SELECT *
-            FROM units
-            WHERE id = @id)
+AS BEGIN --TODO transakcja
+  IF @new_unit_name != ''
     BEGIN
-      IF @new_unit_name != ''
-        BEGIN
-          UPDATE Units
-          SET unit_name = @new_unit_name
-          WHERE id = @id
-        END
-      IF EXISTS(SELECT *
-                FROM UnitTypes
-                WHERE id = @new_unit_type)
-        BEGIN
-          UPDATE Units
-          SET unit_type = @new_unit_type
-          WHERE id = @id
-        END
-      IF @new_convert_factor > 0
-        BEGIN
-          UPDATE Units
-          SET convert_factor = @new_convert_factor
-          WHERE id = @id
-        END
+      UPDATE Units
+      SET unit_name = @new_unit_name
+      WHERE id = @id
+    END
+  UPDATE Units
+  SET unit_type = @new_unit_type
+  WHERE id = @id
+  IF @new_convert_factor > 0
+    BEGIN
+      UPDATE Units
+      SET convert_factor = @new_convert_factor
+      WHERE id = @id
     END
 END
 GO
@@ -81,16 +67,11 @@ CREATE PROCEDURE updateTax
     @new_tax_name  NVARCHAR(32),
     @new_tax_value FLOAT
 AS BEGIN
-  IF EXISTS(SELECT *
-            FROM Taxes
-            WHERE id = @id)
+  IF @new_tax_name != ''
     BEGIN
-      IF @new_tax_name != ''
-        BEGIN
-          UPDATE Taxes
-          SET tax_name = @new_tax_name, tax_value = @new_tax_value
-          WHERE id = @id
-        END
+      UPDATE Taxes
+      SET tax_name = @new_tax_name, tax_value = @new_tax_value
+      WHERE id = @id
     END
 END
 GO
@@ -102,30 +83,19 @@ CREATE PROCEDURE addCategory
     @slug                NVARCHAR(32),
     @overriding_category INT
 AS BEGIN
-  IF @overriding_category = 0 OR @overriding_category != 0 AND EXISTS(SELECT *
-                                                                      FROM Categories
-                                                                      WHERE
-                                                                        id = @overriding_category)
-    BEGIN
-      INSERT INTO Categories (category_name, slug, overriding_category) VALUES
-        (@category_name, @slug, @overriding_category)
-    END
-
+  INSERT INTO Categories (category_name, slug, overriding_category) VALUES
+    (@category_name, @slug, @overriding_category)
 END
 
 
 CREATE PROCEDURE removeCategory
     @category_id INT
 AS BEGIN
-  IF EXISTS(SELECT *
-            FROM Categories
-            WHERE id = @category_id)
-    BEGIN
-      DELETE FROM Categories
-      WHERE id = @category_id
-    END
-
+  DELETE FROM Categories
+  WHERE id = @category_id
 END
+GO
+
 
 --------------------RECEIPTS--------------------
 
@@ -135,6 +105,7 @@ AS BEGIN
   INSERT INTO Receipts (description) VALUES
     (@description)
 END
+GO
 
 
 CREATE PROCEDURE addIngredient
@@ -142,22 +113,10 @@ CREATE PROCEDURE addIngredient
     @ingredient_id INT,
     @quantity      FLOAT
 AS BEGIN
-  IF (SELECT COUNT(*)
-      FROM Ingredients
-      WHERE receipt_id = @receipt_id AND ingredient_id = @ingredient_id) = 0
-    BEGIN
-      IF EXISTS(SELECT *
-                FROM Receipts
-                WHERE id = @receipt_id) AND
-         EXISTS(SELECT *
-                FROM ProductsStored
-                WHERE id = @ingredient_id)
-        BEGIN
-          INSERT INTO Ingredients (receipt_id, ingredient_id, quantity) VALUES
-            (@receipt_id, @ingredient_id, @quantity)
-        END
-    END
+  INSERT INTO Ingredients (receipt_id, ingredient_id, quantity) VALUES
+    (@receipt_id, @ingredient_id, @quantity)
 END
+GO
 
 --------------------PRODUCTS--------------------
 
@@ -165,14 +124,12 @@ CREATE PROCEDURE addProduct
 AS BEGIN
 
 END
+GO
 
 CREATE PROCEDURE addStoredProduct
     @product_id INT
 AS BEGIN
-  IF EXISTS(SELECT *
-            FROM Products
-            WHERE id = @product_id) AND
-     NOT EXISTS(SELECT *
+  IF NOT EXISTS(SELECT *
                 FROM ProductsSold
                 WHERE id = @product_id AND receipt_id IS NOT NULL)
     BEGIN
@@ -180,11 +137,17 @@ AS BEGIN
         (@product_id)
     END
 END
+GO
+
 
 CREATE PROCEDURE addSoldProduct
     @product_id INT,
     @receipt_id INT
 AS BEGIN
-
+  BEGIN
+    INSERT INTO ProductsSold (id, receipt_id) VALUES
+      (@product_id, @receipt_id)
+  END
 END
+GO
 

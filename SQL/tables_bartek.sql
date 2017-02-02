@@ -8,14 +8,14 @@ CREATE TABLE UnitTypes (
 CREATE TABLE Units (
   id             INT PRIMARY KEY IDENTITY (1, 1),
   unit_name      NVARCHAR(32) UNIQUE NOT NULL,
-  convert_factor FLOAT               NOT NULL,
+  convert_factor FLOAT               NOT NULL CHECK (convert_factor >= 0),
   unit_type      INT FOREIGN KEY REFERENCES UnitTypes (id)
 )
 
 CREATE TABLE Taxes (
   id        INT PRIMARY KEY IDENTITY (1, 1),
   tax_name  NVARCHAR(32) UNIQUE NOT NULL,
-  tax_value FLOAT               NOT NULL
+  tax_value FLOAT               NOT NULL CHECK (tax_value >= 0 AND tax_value <= 1)
 )
 
 CREATE TABLE Categories (
@@ -57,6 +57,6 @@ CREATE TABLE Ingredients (
 CREATE TABLE Prices (
   product_id   INT FOREIGN KEY REFERENCES ProductsSold (id),
   period_start DATE  NOT NULL,
-  price        MONEY NOT NULL,
+  price        MONEY NOT NULL CHECK (price >= 0),
   PRIMARY KEY (product_id, period_start)
 )
