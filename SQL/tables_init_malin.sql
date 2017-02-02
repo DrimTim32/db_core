@@ -17,15 +17,15 @@ EXEC	@return_value = [dbo].[addUser]
 		@username = N'malin',
 		@name = N'marcin',
 		@surname = N'malinowski',
-		@permission = 255 
-
+		@permission = 1 
+go
 DECLARE	@return_value int
 EXEC	@return_value = [dbo].[addUser]
 		@password = N'gogo',
 		@username = N'gogo',
 		@name = N'gogo',
 		@surname = N'gogo',
-		@permission = 255 
+		@permission = 1 
 
 DECLARE	@return_value int,
 		@tmp_credentials smallint

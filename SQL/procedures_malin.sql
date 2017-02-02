@@ -117,7 +117,9 @@ AS
 		BEGIN
 			SELECT @Salt = T.password_salt FROM @TMPUSER T 
 			SET @Hash = HASHBYTES('SHA1', @Salt + @password) 
-			SELECT @tmp_credentials = T.permission from @TMPUSER T WHERE T.password = @Hash 
+			SELECT @tmp_credentials = 
+					(select P.value from EmployePermissions P 
+							where P.id 	= (select T.permission from @TMPUSER T WHERE T.password = @Hash))
 		END 
 	END
 GO
