@@ -12,7 +12,7 @@ AS BEGIN
 END
 GO
 
-CREATE PROCEDURE deleteUnit
+CREATE PROCEDURE removeUnit
     @unit_name NVARCHAR(32)
 AS BEGIN
   DELETE FROM Units
@@ -54,11 +54,11 @@ AS BEGIN
 END
 GO
 
-CREATE PROCEDURE deleteTax
-    @tax_name NVARCHAR(32)
+CREATE PROCEDURE removeTax
+    @tax_id NVARCHAR(32)
 AS BEGIN
   DELETE FROM Taxes
-  WHERE tax_name = @tax_name
+  WHERE id = @tax_id
 END
 GO
 
@@ -184,7 +184,7 @@ CREATE PROCEDURE updatePrice
     @new_price  FLOAT
 AS BEGIN
   INSERT INTO Prices (product_id, period_start, price) VALUES
-    (@priduct_id, (SELECT CONVERT(DATE, GETDATE())), @new_price)
+    (@priduct_id, GETDATE(), @new_price)
 END
 GO
 
