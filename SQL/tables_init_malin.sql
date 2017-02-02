@@ -3,8 +3,12 @@ USE BarProject
 
 INSERT INTO EmployePermissions(name,value)
 VALUES 
-(N'admin',255), (N'Owner',127), (N'Menager',36), 
-(N'WarehouseAdministrator',4), (N'Cook',2), (N'Waitresss',1)
+(N'admin',255), 
+(N'Owner',127),  
+(N'WarehouseAdministrator',16), 
+(N'Cook',2), 
+(N'Waitresss',1), 
+(N'NoUser',0)
 
 DECLARE	@return_value int
 
@@ -13,12 +17,22 @@ EXEC	@return_value = [dbo].[addUser]
 		@username = N'malin',
 		@name = N'marcin',
 		@surname = N'malinowski',
-		@permission = 255 
-
-
+		@permission = 1 
+go
 DECLARE	@return_value int
-EXEC @return_value = checkCredentials
+EXEC	@return_value = [dbo].[addUser]
+		@password = N'gogo',
+		@username = N'gogo',
+		@name = N'gogo',
+		@surname = N'gogo',
+		@permission = 1 
+
+DECLARE	@return_value int,
+		@tmp_credentials smallint
+
+EXEC	@return_value = [dbo].[checkCredentials]
 		@username = N'malin',
-		@password = N'qwerty'
-print @return_value
-		
+		@password = N'qwerty',
+		@tmp_credentials = @tmp_credentials OUTPUT
+
+SELECT	@tmp_credentials as N'@tmp_credentials'
