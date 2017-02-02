@@ -1,8 +1,8 @@
 --drop procedure addUser
 --drop function getSeed
---drop procedure getHash
+--drop procedure getSalt
 --drop procedure getRandom
-
+--drop procedure userExists
 --------------------UTILS-------------------
 
 CREATE PROCEDURE getRandom
@@ -92,18 +92,19 @@ AS
 		ELSE
 			RETURN -1
 	END
-GO
-
+GO 
+ 
 CREATE PROCEDURE checkCredentials
 (
 @username NVARCHAR(64),
-@password NVARCHAR(128)
+@password NVARCHAR(128),
+@tmp_credentials SMALLINT OUTPUT
 )
 AS
 	BEGIN
 		DECLARE @Salt CHAR(25);  
 		DECLARE @Hash VARBINARY(20);
-		DECLARE @tmp_credentials TINYINT ;
+		SET @tmp_credentials  = NULL ;
 		DECLARE @TMPUSER TABLE
 		(
 		  username      NVARCHAR(64),
@@ -111,18 +112,12 @@ AS
 		  password_salt CHAR(25),
 		  permission TINYINT
 		);
-		INSERT INTO @TMPUSER SELECT username,password,password_salt FROM USERS WHERE username = @username
+		INSERT INTO @TMPUSER SELECT username,password,password_salt,permission FROM USERS WHERE username = @username
 		IF EXISTS (SELECT * FROM @TMPUSER)
 		BEGIN
+			SELECT @Salt = T.password_salt FROM @TMPUSER T 
 			SET @Hash = HASHBYTES('SHA1', @Salt + @password) 
-			SET @tmp_credentials = 0
-			SELECT @tmp_credentials = permission FROM @TMPUSER WHERE password = @Hash
-			IF permission != 0
-				RETURN tmp_credentials
-			ELSE
-				RETURN tmp_credentials
-		END
-		ELSE
-			RETURN -1
+			SELECT @tmp_credentials = T.permission from @TMPUSER T WHERE T.password = @Hash 
+		END 
 	END
 GO
