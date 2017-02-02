@@ -13,10 +13,10 @@ END
 GO
 
 CREATE PROCEDURE removeUnit
-    @unit_name NVARCHAR(32)
+    @unit_id int
 AS BEGIN
   DELETE FROM Units
-  WHERE unit_name = @unit_name
+  WHERE id = @unit_id
 END
 GO
 
@@ -55,7 +55,7 @@ END
 GO
 
 CREATE PROCEDURE removeTax
-    @tax_id NVARCHAR(32)
+    @tax_id int
 AS BEGIN
   DELETE FROM Taxes
   WHERE id = @tax_id
