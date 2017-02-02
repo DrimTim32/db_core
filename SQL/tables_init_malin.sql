@@ -27,7 +27,6 @@ EXEC	@return_value = [dbo].[addUser]
 		@surname = N'gogo',
 		@permission = 255 
 
-
 DECLARE	@return_value int,
 		@tmp_credentials smallint
 
