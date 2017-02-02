@@ -33,18 +33,18 @@ CREATE TABLE Products (
   name        NVARCHAR(128) NOT NULL,
 )
 
-CREATE TABLE ProductsSold (
-  id         INT PRIMARY KEY FOREIGN KEY REFERENCES Products (id),
-  receipt_id INT FOREIGN KEY REFERENCES Receipts (id)
-)
-
 CREATE TABLE ProductsStored (
   id INT PRIMARY KEY FOREIGN KEY REFERENCES Products (id)
 )
 
 CREATE TABLE Receipts (
-  id          INT PRIMARY KEY,
+  id          INT PRIMARY KEY IDENTITY (1, 1),
   description NVARCHAR(512)
+)
+
+CREATE TABLE ProductsSold (
+  id         INT PRIMARY KEY FOREIGN KEY REFERENCES Products (id),
+  receipt_id INT FOREIGN KEY REFERENCES Receipts (id)
 )
 
 CREATE TABLE Ingredients (

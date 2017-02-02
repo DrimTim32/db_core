@@ -110,12 +110,87 @@ CREATE PROCEDURE addCategory
 AS BEGIN
   IF (SELECT COUNT(*)
       FROM Categories
-      WHERE id = @id) = 0 AND (@overriding_category = 0 OR @overriding_category != 0 AND
-                                                           EXIST(SELECT * FROM Categories WHERE
-                                                                 id = @overriding_category))
+      WHERE id = @id) = 0 AND
+     (@overriding_category = 0 OR @overriding_category != 0 AND EXISTS(SELECT *
+                                                                       FROM Categories
+                                                                       WHERE
+                                                                         id = @overriding_category))
     BEGIN
-      INSERT INTO Categories (id, category_name, slug, overriding_categpry) VALUES
-        (@id, @category_name, @slug, @overriding_categpry)
+      INSERT INTO Categories (id, category_name, slug, overriding_category) VALUES
+        (@id, @category_name, @slug, @overriding_category)
     END
 
 END
+
+
+CREATE PROCEDURE removeCategory
+  @category_id int
+AS BEGIN
+  if EXISTS(select * from Categories where id = @category_id)
+    BEGIN
+      DELETE FROM Categories WHERE id = @category_id
+    END
+
+END
+
+  --------------------RECEIPTS--------------------
+
+  CREATE PROCEDURE addReceipt
+      @description NVARCHAR(512)
+  AS BEGIN
+    INSERT INTO Receipts (description) VALUES
+      (@description)
+  END
+
+
+  CREATE PROCEDURE addIngredient
+      @receipt_id    INT,
+      @ingredient_id INT,
+      @quantity      FLOAT
+  AS BEGIN
+    IF (SELECT COUNT(*)
+        FROM Ingredients
+        WHERE receipt_id = @receipt_id AND ingredient_id = @ingredient_id) = 0
+      BEGIN
+        IF EXISTS(SELECT *
+                  FROM Receipts
+                  WHERE id = @receipt_id) AND
+           EXISTS(SELECT *
+                  FROM ProductsStored
+                  WHERE id = @ingredient_id)
+          BEGIN
+            INSERT INTO Ingredients (receipt_id, ingredient_id, quantity) VALUES
+              (@receipt_id, @ingredient_id, @quantity)
+          END
+      END
+  END
+
+  --------------------PRODUCTS--------------------
+
+  CREATE PROCEDURE addProduct
+  AS BEGIN
+
+  END
+
+  CREATE PROCEDURE addStoredProduct
+      @product_id INT
+  AS BEGIN
+    IF EXISTS(SELECT *
+              FROM Products
+              WHERE id = @product_id) AND
+       NOT EXISTS(SELECT *
+                  FROM ProductsSold
+                  WHERE id = @product_id AND receipt_id IS NOT NULL)
+      BEGIN
+        INSERT INTO ProductsStored (id) VALUES
+          (@product_id)
+      END
+  END
+
+  CREATE PROCEDURE addSoldProduct
+      @product_id INT,
+      @receipt_id INT
+  AS BEGIN
+
+  END
+
