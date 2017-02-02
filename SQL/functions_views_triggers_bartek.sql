@@ -67,6 +67,12 @@ CREATE FUNCTION soldProductDetails(@product_id INT)
                                ON PRS.id = P.product_id
                            WHERE PRS.id = @product_id)
 
+  
+CREATE FUNCTION pricesHistory(@product_id INT)
+  RETURNS TABLE AS RETURN (SELECT *
+                           FROM prices
+                           WHERE product_id = @product_id)
+
 
 CREATE VIEW productSimple AS
   SELECT
