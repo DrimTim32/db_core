@@ -7,7 +7,7 @@ CREATE TABLE Users (
   password_salt CHAR(25)      NOT NULL,
   name     NVARCHAR(64) NOT NULL,
   surname  NVARCHAR(64) NOT NULL,
-  permission TINYINT FOREIGN KEY REFERENCES EmployePermissions (value)
+  permission TINYINT FOREIGN KEY REFERENCES EmployePermissions (id)
 );
 
 CREATE TABLE EmployePermissions(
