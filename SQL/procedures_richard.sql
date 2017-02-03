@@ -13,11 +13,9 @@ create procedure addLocation
 )
 as
 begin 
-	if not exists(select * from Locations where name=@name and address=@address and city=@city)
-	begin
-		insert into Locations(name, address, city, postal_code, country, phone)
-		values (@name, @address, @city, @postal_code, @country, @phone)
-	end
+	insert into Locations(name, address, city, postal_code, country, phone)
+	values (@name, @address, @city, @postal_code, @country, @phone)
+
 end
 -- REMOVE
 go
@@ -85,11 +83,8 @@ create procedure addSupplier
 )
 as
 begin 
-	if not exists(select * from Suppliers where name=@name and address=@address and city=@city)
-	begin
-		insert into Suppliers(name, address, city, postal_code, country, contact_name, phone, fax, website)
-		values (@name, @address, @city, @postal_code, @country, @contact_name, @phone, @fax, @website)
-	end
+	insert into Suppliers(name, address, city, postal_code, country, contact_name, phone, fax, website)
+	values (@name, @address, @city, @postal_code, @country, @contact_name, @phone, @fax, @website)
 end
 -- REMOVE
 go
@@ -164,11 +159,8 @@ create procedure addSpot
 )
 as
 begin 
-	if not exists(select * from Spots where name=@name)
-	begin
-		insert into Spots(name)
-		values (@name)
-	end
+	insert into Spots(name)
+	values (@name)
 end
 -- REMOVE
 go
@@ -202,11 +194,8 @@ create procedure addWorkstation
 )
 as
 begin 
-	if not exists(select * from Workstations where name=@name)
-	begin
-		insert into Workstations(name)
-		values (@name)
-	end
+	insert into Workstations(name)
+	values (@name)
 end
 -- REMOVE
 go
@@ -251,13 +240,8 @@ create procedure addToWarehouse
 )
 as
 begin 
-	if	exists(select * from Locations where id=@location_id)
-		and exists(select * from Products where id=@product_in_stock_id)
-		and @quantity > 0
-	begin
-		insert into Warehouse(location_id, product_in_stock_id, quantity)
-		values (@location_id, @product_in_stock_id, @quantity)
-	end
+	insert into Warehouse(location_id, product_in_stock_id, quantity)
+	values (@location_id, @product_in_stock_id, @quantity)
 end
 -- REMOVE from
 go
@@ -281,25 +265,10 @@ create procedure updateQuantityInWarehouse -- argument mowi o ile zwiekszyc/zmni
 )
 as
 begin 
+	update Warehouse
+	set quantity = quantity + @quantity_change 
+	where	location_id=@location_id
+			and product_in_stock_id = @product_in_stock_id
 
-	if exists(select * from Warehouse
-							where	location_id=@location_id
-									and product_in_stock_id = @product_in_stock_id)
-	begin
-		declare @temp_quantity smallint
-		set @temp_quantity = (select quantity from Warehouse
-							where	location_id=@location_id
-									and product_in_stock_id = @product_in_stock_id)
-		if @temp_quantity + @quantity_change > 0 -- update wiersza
-		begin
-			update Warehouse
-			set quantity = @temp_quantity + @quantity_change 
-			where	location_id=@location_id
-					and product_in_stock_id = @product_in_stock_id
-		end
-		if @temp_quantity + @quantity_change = 0 --usuwanie ca³ego wiersza
-		begin
-			exec dbo.removeFromWarehouse @location_id, @product_in_stock_id
-		end
-	end
+			--pasowa³by tutaj trigger, który po updacie sprawdza czy quantity jest = 0 i jeœli tak to usuwa dany wiersz
 end
