@@ -56,7 +56,7 @@ CREATE TABLE ProductsSold (
 CREATE TABLE Ingredients (
   receipt_id    INT FOREIGN KEY REFERENCES Receipts (id),
   ingredient_id INT FOREIGN KEY REFERENCES ProductsStored (id),
-  quantity      FLOAT NOT NULL,
+  quantity      FLOAT NOT NULL CHECK (quantity >= 0),
   PRIMARY KEY (receipt_id, ingredient_id)
 )
 
@@ -65,4 +65,17 @@ CREATE TABLE Prices (
   period_start DATE  NOT NULL,
   price        MONEY NOT NULL CHECK (price >= 0),
   PRIMARY KEY (product_id, period_start)
+)
+
+
+CREATE TABLE LoginLog (
+  username   NVARCHAR(64) NOT NULL FOREIGN KEY REFERENCES Users (username),
+  login_date DATE
+)
+
+
+CREATE TABLE ProductsUsage (
+  product_id INT   NOT NULL FOREIGN KEY REFERENCES Products (id),
+  date       DATE  NOT NULL,
+  quantity   FLOAT NOT NULL CHECK (quantity >= 0)
 )
