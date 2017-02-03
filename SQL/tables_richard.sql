@@ -20,6 +20,7 @@ create table Warehouse
 	product_in_stock_id int not null,
 	quantity smallint not null,
 	primary key (location_id, product_in_stock_id),
+	constraint check_quantity_positivity CHECK (quantity>=0) -- =0 ¿eby umo¿liwiæ pobranie wszystkich elementów z magazynu + odpaliæ trigger?
 	foreign key (location_id) references Locations(id), 
 	foreign key (product_in_stock_id) references Products(id) -- Products = tabela Bartka (artykuly spozywcze; spr. zgodnoœæ nazwy)
 	on delete cascade
