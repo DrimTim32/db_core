@@ -86,7 +86,7 @@ AS BEGIN
   INSERT INTO Categories (category_name, slug, overriding_category) VALUES
     (@category_name, @slug, @overriding_category)
 END
-
+GO
 
 CREATE PROCEDURE removeCategory
     @category_id INT
