@@ -2,7 +2,7 @@
 
 USE BarProject
 
-create table Locations
+create table Locations -- OK
 (
 	id int IDENTITY(1,1) not null,
 	name nvarchar(40) not null,
@@ -22,11 +22,12 @@ create table Warehouse
 	primary key (location_id, product_in_stock_id),
 	foreign key (location_id) references Locations(id), 
 	foreign key (product_in_stock_id) references Products(id) -- Products = tabela Bartka (artykuly spozywcze; spr. zgodnoœæ nazwy)
+	on delete cascade
 )
 
 
 
-create table Suppliers
+create table Suppliers -- OK
 (
 	id int IDENTITY(1,1) not null,
 	name nvarchar(40) not null,
@@ -37,7 +38,7 @@ create table Suppliers
 	contact_name nvarchar(30) null,
 	phone nvarchar(25) null,
 	fax nvarchar(25) null,
-	website ntext null,
+	website nvarchar(max) null,
 	primary key (id)
 )
 
@@ -67,7 +68,7 @@ create table Warehouse_order_details
 	foreign key (product_id) references Products(id) -- Products = tabela Bartka (artykuly spozywcze; spr. zgodnoœæ nazwy)
 )
 
-create table Spots  -- miejsce zamowienia klienta, np. bar, stolik nr 1, czerwona kanapa etc.
+create table Spots -- OK   -- miejsce zamowienia klienta, np. bar, stolik nr 1, czerwona kanapa etc.
 (
 	id int IDENTITY(1,1) not null,
 	name nvarchar(40) not null,
@@ -101,7 +102,7 @@ create table Client_order_details
 
 
 
-create table Workstations  -- stanowiska pracy, np. bar, pizza etc.
+create table Workstations --OK   -- stanowiska pracy, np. bar, pizza etc.
 (
 	id int IDENTITY(1,1) not null,
 	name nvarchar(40) not null,
