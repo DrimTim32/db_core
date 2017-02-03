@@ -164,7 +164,7 @@ begin
 end
 -- REMOVE
 go
-create procedure removeSpots
+create procedure removeSpot
 (	@id int
 )
 as
