@@ -1,19 +1,19 @@
 USE BarProject
 
 --------------------UNITS--------------------
-
-CREATE PROCEDURE addUnit
+go
+CREATE PROCEDURE addUnit(
     @unit_name      NVARCHAR(32),
     @convert_factor FLOAT,
-    @unit_type      INT
+    @unit_type      INT)
 AS BEGIN
   INSERT INTO Units (unit_name, convert_factor, unit_type) VALUES
     (@unit_name, @convert_factor, @unit_type)
 END
 GO
 
-CREATE PROCEDURE removeUnit
-    @unit_name NVARCHAR(32)
+CREATE PROCEDURE removeUnit(
+    @unit_name NVARCHAR(32))
 AS BEGIN
   DELETE FROM Units
   WHERE unit_name = @unit_name
@@ -86,7 +86,7 @@ AS BEGIN
   INSERT INTO Categories (category_name, slug, overriding_category) VALUES
     (@category_name, @slug, @overriding_category)
 END
-
+go
 
 CREATE PROCEDURE removeCategory
     @category_id INT
