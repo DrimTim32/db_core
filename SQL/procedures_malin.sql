@@ -124,7 +124,7 @@ AS
 	END
 GO
 
-create procedure createInternalError (
+CREATE PROCEDURE createInternalError (
 	@error_name NVARCHAR(64),
 	@error_time datetime,
 	@message NVARCHAR(3000),
@@ -132,16 +132,31 @@ create procedure createInternalError (
 	@context NVARCHAR(900),
 	@inner_message NVARCHAR(400)
 )
-as
-begin
-	insert into InternalErrors (error_name, error_time, message, stack_trace, context, inner_message)
-	values (@error_name, @error_time, @message, @stack_trace, @context, @inner_message)
-end
-go
+AS
+BEGIN
+	INSERT INTO InternalErrors (error_name, error_time, message, stack_trace, context, inner_message)
+	VALUES (@error_name, @error_time, @message, @stack_trace, @context, @inner_message)
+END
+GO
 
-create procedure clearInternalErrors
-as
-begin
+CREATE PROCEDURE clearInternalErrors
+AS
+BEGIN
 	truncate table InternalErrors
-end
-go
+END
+GO
+
+
+CREATE FUNCTION getUserPermission (
+	@username NVARCHAR(64)
+)
+RETURNS TINYINT
+AS
+BEGIN
+	DECLARE @i TINYINT
+	SELECT	@i = 
+			(SELECT TOP(1) value FROM EmployePermissions 
+			WHERE id = (SELECT permission FROM Users WHERE username = @username))
+	RETURN @i
+END
+GO
