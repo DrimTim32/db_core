@@ -138,3 +138,10 @@ begin
 	values (@error_name, @error_time, @message, @stack_trace, @context, @inner_message)
 end
 go
+
+create procedure clearInternalErrors
+as
+begin
+	truncate table InternalErrors
+end
+go
