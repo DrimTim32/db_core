@@ -1,5 +1,11 @@
 USE BarProject
 
+CREATE TABLE EmployePermissions(
+  id TINYINT PRIMARY KEY IDENTITY (1, 1),
+  value TINYINT UNIQUE,
+  name NVARCHAR(64) NOT NULL,
+);
+
 CREATE TABLE Users (
   id       INT PRIMARY KEY IDENTITY (1, 1),
   username      NVARCHAR(64)  NOT NULL,
@@ -10,8 +16,4 @@ CREATE TABLE Users (
   permission TINYINT FOREIGN KEY REFERENCES EmployePermissions (id)
 );
 
-CREATE TABLE EmployePermissions(
-  id TINYINT PRIMARY KEY IDENTITY (1, 1),
-  value TINYINT UNIQUE,
-  name NVARCHAR(64) NOT NULL,
-);
+

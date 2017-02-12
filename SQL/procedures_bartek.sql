@@ -1,22 +1,23 @@
 USE BarProject
 
 --------------------UNITS--------------------
-
-CREATE PROCEDURE addUnit
+go
+CREATE PROCEDURE addUnit(
     @unit_name      NVARCHAR(32),
     @convert_factor FLOAT,
-    @unit_type      INT
+    @unit_type      INT)
 AS BEGIN
   INSERT INTO Units (unit_name, convert_factor, unit_type) VALUES
     (@unit_name, @convert_factor, @unit_type)
 END
 GO
 
-CREATE PROCEDURE deleteUnit
-    @unit_name NVARCHAR(32)
+
+CREATE PROCEDURE removeUnit
+    @unit_id int
 AS BEGIN
   DELETE FROM Units
-  WHERE unit_name = @unit_name
+  WHERE id = @unit_id
 END
 GO
 
@@ -54,11 +55,11 @@ AS BEGIN
 END
 GO
 
-CREATE PROCEDURE deleteTax
-    @tax_name NVARCHAR(32)
+CREATE PROCEDURE removeTax
+    @tax_id int
 AS BEGIN
   DELETE FROM Taxes
-  WHERE tax_name = @tax_name
+  WHERE id = @tax_id
 END
 GO
 
@@ -86,6 +87,7 @@ AS BEGIN
   INSERT INTO Categories (category_name, slug, overriding_category) VALUES
     (@category_name, @slug, @overriding_category)
 END
+GO
 
 
 CREATE PROCEDURE removeCategory
@@ -184,7 +186,7 @@ CREATE PROCEDURE updatePrice
     @new_price  FLOAT
 AS BEGIN
   INSERT INTO Prices (product_id, period_start, price) VALUES
-    (@priduct_id, (SELECT CONVERT(DATE, GETDATE())), @new_price)
+    (@priduct_id, GETDATE(), @new_price)
 END
 GO
 

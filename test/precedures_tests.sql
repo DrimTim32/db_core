@@ -1,16 +1,11 @@
-USE [1060_bar]
+USE BarProject
 
-EXEC addUnit 'hektolitr', 0.01, 1
+SELECT *
+FROM soldProductDetails(6)
 
-SELECT * from Units
+SELECT *
+FROM productSimple
 
-exec deleteUnit 'hektolitr'
+select * from receiptDetails (1)
 
-
-
-exec addTax 'vat 1%', 0.01
-
-SELECT * from Taxes
-
-exec updateTax 3, 'VAT 3%', 0.03
-
+select * from pricesHistory (6)
