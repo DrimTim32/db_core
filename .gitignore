@@ -2,3 +2,5 @@
 *.ssms_suo
 *.ssmssqlproj
 *.ssmssln
+
+.idea

@@ -66,3 +66,6 @@ INSERT INTO ProductsSold (id, receipt_id) VALUES
 
 INSERT INTO Prices (product_id, period_start, price) VALUES
   (6, '2016-12-9', 9)
+
+INSERT INTO Prices (product_id, period_start, price) VALUES
+  (6, '2017-01-31', 12)
