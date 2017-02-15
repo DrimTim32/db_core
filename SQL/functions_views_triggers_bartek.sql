@@ -1,5 +1,7 @@
 USE BarProject
-
+--
+go
+--
 CREATE FUNCTION productsByCategory(@category_id INT)
   RETURNS TABLE AS RETURN (SELECT
                              name,
@@ -7,7 +9,9 @@ CREATE FUNCTION productsByCategory(@category_id INT)
                              unit_id
                            FROM Products
                            WHERE category_id = @category_id)
-
+--
+go
+--
 
 CREATE FUNCTION receiptDetails(@receipt_id INT)
   RETURNS TABLE AS RETURN (SELECT
@@ -17,7 +21,9 @@ CREATE FUNCTION receiptDetails(@receipt_id INT)
                            FROM Ingredients AS I
                              JOIN Receipts AS R ON I.receipt_id = R.id
                            WHERE receipt_id = @receipt_id)
-
+--
+go
+--
 CREATE FUNCTION productDetails(@product_id INT)
   RETURNS TABLE AS RETURN (SELECT
                              PR.id,
@@ -34,7 +40,9 @@ CREATE FUNCTION productDetails(@product_id INT)
                              JOIN Taxes AS T ON PR.tax_id = T.id
                              JOIN Units AS U ON PR.unit_id = U.id
                            WHERE PR.id = @product_id)
-
+--
+go
+--
 
 CREATE FUNCTION soldProductDetails(@product_id INT)
   RETURNS TABLE AS RETURN (SELECT
@@ -67,7 +75,9 @@ CREATE FUNCTION soldProductDetails(@product_id INT)
                                ON PRS.id = P.product_id
                            WHERE PRS.id = @product_id)
 
-
+--
+go
+--
 CREATE FUNCTION pricesHistory(@product_id INT)
   RETURNS TABLE AS RETURN (SELECT
                              price,
@@ -75,7 +85,9 @@ CREATE FUNCTION pricesHistory(@product_id INT)
                            FROM Prices
                            WHERE product_id = @product_id)
 
-
+--
+go
+--
 CREATE VIEW productSimple AS
   SELECT
     P.id,
