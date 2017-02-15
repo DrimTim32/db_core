@@ -12,11 +12,12 @@ AS BEGIN
 END
 GO
 
-CREATE PROCEDURE removeUnit(
-    @unit_name NVARCHAR(32))
+
+CREATE PROCEDURE removeUnit
+    @unit_id int
 AS BEGIN
   DELETE FROM Units
-  WHERE unit_name = @unit_name
+  WHERE id = @unit_id
 END
 GO
 
@@ -55,7 +56,7 @@ END
 GO
 
 CREATE PROCEDURE removeTax
-    @tax_id NVARCHAR(32)
+    @tax_id int
 AS BEGIN
   DELETE FROM Taxes
   WHERE id = @tax_id
@@ -86,7 +87,8 @@ AS BEGIN
   INSERT INTO Categories (category_name, slug, overriding_category) VALUES
     (@category_name, @slug, @overriding_category)
 END
-go
+GO
+
 
 CREATE PROCEDURE removeCategory
     @category_id INT

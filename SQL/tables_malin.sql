@@ -16,4 +16,12 @@ CREATE TABLE Users (
   permission TINYINT FOREIGN KEY REFERENCES EmployePermissions (id)
 );
 
-
+CREATE Table InternalErrors(
+	id int IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	error_name NVARCHAR(64) NOT NULL,
+	error_time datetime NOT NULL,
+	message NVARCHAR(3000),
+	stack_trace NVARCHAR(1000) NOT NULL,
+	context NVARCHAR(900) NOT NULL,
+	inner_message NVARCHAR(400), 
+)
