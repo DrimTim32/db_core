@@ -123,3 +123,40 @@ AS
 		END 
 	END
 GO
+
+CREATE PROCEDURE createInternalError (
+	@error_name NVARCHAR(64),
+	@error_time datetime,
+	@message NVARCHAR(3000),
+	@stack_trace NVARCHAR(1000),
+	@context NVARCHAR(900),
+	@inner_message NVARCHAR(400)
+)
+AS
+BEGIN
+	INSERT INTO InternalErrors (error_name, error_time, message, stack_trace, context, inner_message)
+	VALUES (@error_name, @error_time, @message, @stack_trace, @context, @inner_message)
+END
+GO
+
+CREATE PROCEDURE clearInternalErrors
+AS
+BEGIN
+	truncate table InternalErrors
+END
+GO
+
+
+CREATE FUNCTION getUserPermission (
+	@username NVARCHAR(64)
+)
+RETURNS TINYINT
+AS
+BEGIN
+	DECLARE @i TINYINT
+	SELECT	@i = 
+			(SELECT TOP(1) value FROM EmployePermissions 
+			WHERE id = (SELECT permission FROM Users WHERE username = @username))
+	RETURN @i
+END
+GO
