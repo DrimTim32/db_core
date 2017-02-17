@@ -124,6 +124,7 @@ AS
 	END
 GO
 
+
 create procedure createInternalError (
 	@error_name NVARCHAR(64),
 	@error_time datetime,
