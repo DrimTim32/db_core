@@ -1,5 +1,6 @@
 USE BarProject
 GO
+
 CREATE FUNCTION productsByCategory(@category_id INT)
   RETURNS TABLE AS RETURN (SELECT
                              name,
@@ -8,6 +9,7 @@ CREATE FUNCTION productsByCategory(@category_id INT)
                            FROM Products
                            WHERE category_id = @category_id)
 GO
+
 
 CREATE FUNCTION receiptDetails(@receipt_id INT)
   RETURNS TABLE AS RETURN (SELECT
@@ -18,7 +20,6 @@ CREATE FUNCTION receiptDetails(@receipt_id INT)
                              JOIN Receipts AS R ON I.receipt_id = R.id
                            WHERE receipt_id = @receipt_id)
 GO
-
 
 CREATE FUNCTION productDetails(@product_id INT)
   RETURNS TABLE AS RETURN (SELECT
@@ -37,6 +38,7 @@ CREATE FUNCTION productDetails(@product_id INT)
                              JOIN Units AS U ON PR.unit_id = U.id
                            WHERE PR.id = @product_id)
 GO
+
 
 CREATE FUNCTION soldProductDetails(@product_id INT)
   RETURNS TABLE AS RETURN (SELECT
@@ -68,7 +70,6 @@ CREATE FUNCTION soldProductDetails(@product_id INT)
                                                            P2.product_id = @product_id)) AS P
                                ON PRS.id = P.product_id
                            WHERE PRS.id = @product_id)
-
 GO
 
 CREATE FUNCTION pricesHistory(@product_id INT)
@@ -77,7 +78,6 @@ CREATE FUNCTION pricesHistory(@product_id INT)
                              period_start
                            FROM Prices
                            WHERE product_id = @product_id)
-
 GO
 
 CREATE VIEW productSimple AS
