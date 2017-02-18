@@ -107,5 +107,19 @@ CREATE VIEW productsLastPrices AS
                         WHERE
                           P2.product_id = Prices.product_id)
 
+CREATE VIEW productsLastPricesWithName AS
+  SELECT
+    product_id,
+    name,
+    price,
+    period_start
+  FROM ProductsSold AS P
+    JOIN Prices ON P.id = Prices.product_id
+    JOIN Products ON P.id = Products.id
+  WHERE period_start = (SELECT MAX(period_start)
+                        FROM Prices AS P2
+                        WHERE
+                          P2.product_id = Prices.product_id)
+
 SELECT *
 FROM productsLastPrices
