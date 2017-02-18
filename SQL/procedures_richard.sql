@@ -155,12 +155,13 @@ end
 go
 create procedure addSpot
 (	
-	@name nvarchar(40)
+	@name nvarchar(40),
+	@location_id int
 )
 as
 begin 
-	insert into Spots(name)
-	values (@name)
+	insert into Spots(name, location_id)
+	values (@name, @location_id)
 end
 -- REMOVE
 go
@@ -190,12 +191,13 @@ end
 go
 create procedure addWorkstation
 (	
-	@name nvarchar(40)
+	@name nvarchar(40),
+	@location_id int
 )
 as
 begin 
-	insert into Workstations(name)
-	values (@name)
+	insert into Workstations(name, location_id)
+	values (@name, @location_id)
 end
 -- REMOVE
 go
@@ -228,7 +230,7 @@ end
 	quantity smallint not null,
 	primary key (location_id, product_in_stock_id),
 	foreign key (location_id) references Locations(id), 
-	foreign key (product_in_stock_id) references Products(id) -- Products = tabela Bartka (artykuly spozywcze; spr. zgodnoœæ nazwy)
+	foreign key (product_in_stock_id) references Products(id) -- Products = tabela Bartka (artykuly spozywcze; spr. zgodno?? nazwy)
 	on delete cascade
 */
 go
@@ -270,13 +272,15 @@ begin
 	where	location_id=@location_id
 			and product_in_stock_id = @product_in_stock_id
 
-			--pasowa³by tutaj trigger, który po updacie sprawdza czy quantity jest = 0 i jeœli tak to usuwa dany wiersz
+			--pasowa?by tutaj trigger, który po updacie sprawdza czy quantity jest = 0 i je?li tak to usuwa dany wiersz
 end
+go
 -- TRIGGERS 
 --T_01 usuwa wiersze, ktore po update maja quantity 0
 create trigger checkQuantityAfterWarehouseUpdate 
-after update 
 on Warehouse
+after update
+as
 begin
 	delete from Warehouse
 	where quantity = 0
@@ -527,14 +531,12 @@ go
 create procedure addClientOrderDetail --trigger do pobierania aktualnej ceny produktu -- OK
 (	@client_order_id int,
 	@products_sold_id int,
-	@unit_price money,
-	@quantity smallint,
-	@spot_id int
+	@quantity smallint
 )
 as
 begin 
-	insert into Client_order_details(client_order_id, products_sold_id, unit_price, quantity, spot_id)
-	values (@client_order_id, @products_sold_id, @unit_price, @quantity, @spot_id)
+	insert into Client_order_details(client_order_id, products_sold_id, quantity)
+	values (@client_order_id, @products_sold_id, @quantity)
 
 end
 -- REMOVE
@@ -553,23 +555,13 @@ go
 create procedure updateClientOrderDetail
 (	@client_order_id int,
 	@products_sold_id int,
-	@new_unit_price money,
-	@new_quantity smallint,
-	@new_spot_id int
+	@new_quantity smallint
 )
 as
 begin 
-	if @new_unit_price > 0
-		update Client_order_details
-		set unit_price = @new_unit_price
-		WHERE client_order_id=@client_order_id and products_sold_id=@products_sold_id 
 	if @new_quantity > 0
 		update Client_order_details
 		set quantity = @new_quantity
-		WHERE client_order_id=@client_order_id and products_sold_id=@products_sold_id 
-	if @new_spot_id > 0
-		update Client_order_details
-		set spot_id = @new_spot_id
 		WHERE client_order_id=@client_order_id and products_sold_id=@products_sold_id 
 end
 
@@ -604,27 +596,7 @@ begin
 	declare @price money
 	set @price = (select price from Prices where product_id = @product_id and period_start = @recent_change_date)
   insert into Client_order_details
-       select client_order_id, @product_id, @price, quantity, spot_id
+       select client_order_id, @product_id, quantity
        from inserted
 end
--- T_03
 go
-create trigger updateClientOrderDetailWithPrice 
-on Client_order_details
-after update
-as
-begin
-	declare @product_id int
-	set @product_id = (select products_sold_id from inserted)
-	declare @recent_change_date date
-	set @recent_change_date = (select period_start from Prices where product_id = @product_id)
-	declare @old_price money
-	set @old_price = (select price from Prices where product_id = @product_id and period_start = @recent_change_date)
-	declare @new_price money
-	set @new_price = (select unit_price from inserted)
-	
-	if @old_price != @new_price
-		exec dbo.updatePrice @product_id, @new_price
-end
-
-
