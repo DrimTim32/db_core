@@ -288,4 +288,3 @@ AS BEGIN
     (@priduct_id, GETDATE(), @new_price)
 END
 GO
-

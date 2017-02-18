@@ -94,7 +94,7 @@ CREATE VIEW productSimple AS
   FROM Products P
     JOIN Categories C ON P.category_id = C.id
 
-
+GO
 CREATE VIEW productsLastPrices AS
   SELECT
     product_id,
@@ -106,6 +106,6 @@ CREATE VIEW productsLastPrices AS
                         FROM Prices AS P2
                         WHERE
                           P2.product_id = Prices.product_id)
-
+GO
 SELECT *
 FROM productsLastPrices

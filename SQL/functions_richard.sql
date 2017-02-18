@@ -136,7 +136,7 @@ create function getClientOrderDetails (
 )
 returns table
 as
-	return (select products_sold_id, unit_price, quantity, spot_id from Client_order_details
+	return (select products_sold_id, quantity from Client_order_details
 			where client_order_id = @client_order_id)
 
 go
@@ -147,8 +147,9 @@ returns money
 as
 begin
 	declare @result money
-	set @result =  (select sum(unit_price * quantity) value from Client_order_details
-			where client_order_id = @client_order_id)
+	set @result =  (select sum(PLP.price * COD.quantity) value 
+			from Client_order_details COD JOIN productsLastPrices PLP on COD.products_sold_id = PLP.product_id
+			where COD.client_order_id = @client_order_id)
 	return @result
 end
 

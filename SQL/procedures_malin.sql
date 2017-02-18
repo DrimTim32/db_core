@@ -5,6 +5,8 @@
 --drop procedure userExists
 --------------------UTILS-------------------
 
+USE BarProject
+GO
 CREATE PROCEDURE getRandom
 (
 @Seed INT,
