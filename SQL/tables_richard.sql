@@ -2,125 +2,126 @@
 
 USE BarProject
 
-create table Locations -- OK
+CREATE TABLE Locations -- OK
 (
-	id int IDENTITY(1,1) not null,
-	name nvarchar(40) not null,
-	address nvarchar(60),
-	city nvarchar(15),
-	postal_code nvarchar(10),
-	country nvarchar(15),
-	phone nvarchar(25),
-	primary key (id)
+  id          INT IDENTITY (1, 1) NOT NULL,
+  name        NVARCHAR(40)        NOT NULL,
+  address     NVARCHAR(60),
+  city        NVARCHAR(15),
+  postal_code NVARCHAR(10),
+  country     NVARCHAR(15),
+  phone       NVARCHAR(25),
+  PRIMARY KEY (id)
 )
 
-create table Warehouse -- OK
+CREATE TABLE Warehouse -- OK
 (
-	location_id int not null,
-	product_in_stock_id int not null,
-	quantity smallint not null,
-	primary key (location_id, product_in_stock_id),
-	constraint check_quantity_positivity CHECK (quantity>=0), -- =0 ?eby umo?liwi? pobranie wszystkich elementów z magazynu + odpali? trigger?
-	foreign key (location_id) references Locations(id), 
-	foreign key (product_in_stock_id) references Products(id) -- Products = tabela Bartka (artykuly spozywcze; spr. zgodno?? nazwy)
-	on delete cascade
-)
-
-
-
-create table Suppliers -- OK
-(
-	id int IDENTITY(1,1) not null,
-	name nvarchar(40) not null,
-	address nvarchar(60),
-	city nvarchar(15),
-	postal_code nvarchar(10),
-	country nvarchar(15),
-	contact_name nvarchar(30),
-	phone nvarchar(25),
-	fax nvarchar(25),
-	website nvarchar(max),
-	primary key (id)
-)
-
-create table Warehouse_orders -- OK
-(
-	id int IDENTITY(1,1) not null,
-	employee_id int not null, --odnosi sie do nie mojej tabeli-> ujednolicic, by 'Employees' oraz 'Users' mialy te sama nazwe (to te same byty)
-	supplier_id int not null,
-	location_id int not null,
-	order_date datetime,
-	required_date datetime,
-	delivery_date datetime, -- gdy ta wartosc nie jest nullem, powinien si? zwi?ksza? stan magazynu
-	constraint chk_DatesWO check (order_date<=required_date and order_date<=delivery_date),
-	primary key (id),
-	foreign key (employee_id) references Users(id), -- ujednolicona nazwa
-	foreign key (supplier_id) references Suppliers(id),
-	foreign key (location_id) references Locations(id)
-)
-
-create table Warehouse_order_details -- OK
-(
-	warehouse_order_id int not null,
-	product_id int not null,
-	unit_price money not null,
-	quantity smallint not null,
-	constraint chk_MoneyWOD check (unit_price >= 0),
-	constraint chk_QuantityWOD check (quantity >= 0),
-	primary key (warehouse_order_id, product_id),
-	foreign key (warehouse_order_id) references Warehouse_orders(id),
-	foreign key (product_id) references Products(id) -- Products = tabela Bartka (artykuly spozywcze; spr. zgodno?? nazwy)
-)
-
-create table Spots -- OK   -- miejsce zamowienia klienta, np. bar, stolik nr 1, czerwona kanapa etc.
-(
-	id int IDENTITY(1,1) not null,
-	location_id int not null,
-	name nvarchar(40) not null,
-	primary key (id),
-	foreign key (location_id) references Locations(id)
-)
-
-create table Client_orders -- OK
-(
-	id int IDENTITY(1,1) not null,
-	spot_id int not null, -- gdzie klient zamówi?, np.: bar, czerwona sofa, czarna sofa etc.
-	employee_id int not null,
-	order_time datetime,
-	payment_time datetime,
-	constraint chk_DatesCO check (order_time<=payment_time),
-	primary key (id),
-	foreign key (spot_id) references Spots(id),
-	foreign key (employee_id) references Users(id) -- Employees = Users -> ujednolici?, je?li nie ujednolicone!
-)
-
-create table Client_order_details -- OK
-(
-	client_order_id int not null,
-	products_sold_id int not null,
-	quantity smallint not null,
-	constraint chk_QuantityCOD check (quantity >= 0),
-	primary key (client_order_id, products_sold_id),
-	foreign key (client_order_id) references Client_orders(id),
-	foreign key (products_sold_id) references ProductsSold(id)
+  location_id         INT      NOT NULL,
+  product_in_stock_id INT      NOT NULL,
+  quantity            SMALLINT NOT NULL,
+  PRIMARY KEY (location_id, product_in_stock_id),
+  CONSTRAINT check_quantity_positivity CHECK (quantity >=
+                                              0), -- =0 ?eby umo?liwi? pobranie wszystkich elementï¿½w z magazynu + odpali? trigger?
+  FOREIGN KEY (location_id) REFERENCES Locations (id),
+  FOREIGN KEY (product_in_stock_id) REFERENCES Products (id) -- Products = tabela Bartka (artykuly spozywcze; spr. zgodno?? nazwy)
+    ON DELETE CASCADE
 )
 
 
-
-create table Workstations --OK   -- stanowiska pracy, np. bar, pizza etc.
+CREATE TABLE Suppliers -- OK
 (
-	id int IDENTITY(1,1) not null,
-	location_id int not null,
-	name nvarchar(40) not null,
-	primary key (id),
-	foreign key (location_id) references Locations(id),
+  id           INT IDENTITY (1, 1) NOT NULL,
+  name         NVARCHAR(40)        NOT NULL,
+  address      NVARCHAR(60),
+  city         NVARCHAR(15),
+  postal_code  NVARCHAR(10),
+  country      NVARCHAR(15),
+  contact_name NVARCHAR(30),
+  phone        NVARCHAR(25),
+  fax          NVARCHAR(25),
+  website      NVARCHAR(MAX),
+  PRIMARY KEY (id)
 )
 
-create table Workstation_rights -- OK
+CREATE TABLE Warehouse_orders -- OK
 (
-	workstation_id int not null,
-	employe_permissions tinyint not null, -- Employees = Users -> ujednolici?! (zgodnie z tab Marcina)
-	primary key (workstation_id, employe_permissions),
-	foreign key (workstation_id) references Workstations(id),
-	foreign key (employe_permissions) references EmployePermissions(id), -- typ pracownikow/userow to nie moja tab, ujednolicic nazwy
+  id            INT IDENTITY (1, 1) NOT NULL,
+  employee_id   INT                 NOT NULL, --odnosi sie do nie mojej tabeli-> ujednolicic, by 'Employees' oraz 'Users' mialy te sama nazwe (to te same byty)
+  supplier_id   INT                 NOT NULL,
+  location_id   INT                 NOT NULL,
+  order_date    DATETIME,
+  required_date DATETIME,
+  delivery_date DATETIME, -- gdy ta wartosc nie jest nullem, powinien si? zwi?ksza? stan magazynu
+  CONSTRAINT chk_DatesWO CHECK (order_date <= required_date AND order_date <= delivery_date),
+  PRIMARY KEY (id),
+  FOREIGN KEY (employee_id) REFERENCES Users (id), -- ujednolicona nazwa
+  FOREIGN KEY (supplier_id) REFERENCES Suppliers (id),
+  FOREIGN KEY (location_id) REFERENCES Locations (id)
+)
+
+CREATE TABLE Warehouse_order_details -- OK
+(
+  warehouse_order_id INT      NOT NULL,
+  product_id         INT      NOT NULL,
+  unit_price         MONEY    NOT NULL,
+  quantity           SMALLINT NOT NULL,
+  CONSTRAINT chk_MoneyWOD CHECK (unit_price >= 0),
+  CONSTRAINT chk_QuantityWOD CHECK (quantity >= 0),
+  PRIMARY KEY (warehouse_order_id, product_id),
+  FOREIGN KEY (warehouse_order_id) REFERENCES Warehouse_orders (id)
+    ON DELETE CASCADE,
+  FOREIGN KEY (product_id) REFERENCES Products (id) -- Products = tabela Bartka (artykuly spozywcze; spr. zgodno?? nazwy)
+)
+
+CREATE TABLE Spots -- OK   -- miejsce zamowienia klienta, np. bar, stolik nr 1, czerwona kanapa etc.
+(
+  id          INT IDENTITY (1, 1) NOT NULL,
+  location_id INT                 NOT NULL,
+  name        NVARCHAR(40)        NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (location_id) REFERENCES Locations (id)
+)
+
+CREATE TABLE Client_orders -- OK
+(
+  id           INT IDENTITY (1, 1) NOT NULL,
+  spot_id      INT                 NOT NULL, -- gdzie klient zamï¿½wi?, np.: bar, czerwona sofa, czarna sofa etc.
+  employee_id  INT                 NOT NULL,
+  order_time   DATETIME,
+  payment_time DATETIME,
+  CONSTRAINT chk_DatesCO CHECK (order_time <= payment_time),
+  PRIMARY KEY (id),
+  FOREIGN KEY (spot_id) REFERENCES Spots (id),
+  FOREIGN KEY (employee_id) REFERENCES Users (id) -- Employees = Users -> ujednolici?, je?li nie ujednolicone!
+)
+
+CREATE TABLE Client_order_details -- OK
+(
+  client_order_id  INT      NOT NULL,
+  products_sold_id INT      NOT NULL,
+  quantity         SMALLINT NOT NULL,
+  CONSTRAINT chk_QuantityCOD CHECK (quantity >= 0),
+  PRIMARY KEY (client_order_id, products_sold_id),
+  FOREIGN KEY (client_order_id) REFERENCES Client_orders (id)
+    ON DELETE CASCADE,
+  FOREIGN KEY (products_sold_id) REFERENCES ProductsSold (id)
+)
+
+
+CREATE TABLE Workstations --OK   -- stanowiska pracy, np. bar, pizza etc.
+(
+  id          INT IDENTITY (1, 1) NOT NULL,
+  location_id INT                 NOT NULL,
+  name        NVARCHAR(40)        NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (location_id) REFERENCES Locations (id),
+)
+
+CREATE TABLE Workstation_rights -- OK
+(
+  workstation_id      INT     NOT NULL,
+  employe_permissions TINYINT NOT NULL, -- Employees = Users -> ujednolici?! (zgodnie z tab Marcina)
+  PRIMARY KEY (workstation_id, employe_permissions),
+  FOREIGN KEY (workstation_id) REFERENCES Workstations (id),
+  FOREIGN KEY (employe_permissions) REFERENCES EmployePermissions (id), -- typ pracownikow/userow to nie moja tab, ujednolicic nazwy
 )

@@ -41,4 +41,17 @@ INSERT INTO Warehouse_orders (employee_id, supplier_id, location_id, order_date,
 
 INSERT INTO Warehouse_order_details (warehouse_order_id, product_id, unit_price, quantity) VALUES
   (1, 3, 5, 48),
-  (1, 4, 3, 90)
+  (1, 4, 3, 90),
+  (1, 5, 30, 10)
+
+
+INSERT INTO Client_orders (spot_id, employee_id, order_time, payment_time) VALUES
+  (1, 1, GETDATE(), GETDATE()),
+  (2, 1, GETDATE(), GETDATE())
+
+
+INSERT INTO Client_order_details (client_order_id, products_sold_id, quantity) VALUES
+  (1, 5, 1),
+  (1, 4, 10),
+  (2, 5, 1),
+  (2, 6, 3)
