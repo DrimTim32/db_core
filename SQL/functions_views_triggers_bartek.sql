@@ -166,3 +166,111 @@ AS
     DEALLOCATE inserted_cur
   END
 GO
+
+CREATE TRIGGER addToWarehouseUpdate
+  ON Warehouse_orders
+AFTER UPDATE AS
+  BEGIN
+    DECLARE @order_id INT
+    DECLARE @product_id INT
+    DECLARE @location_id INT
+    DECLARE @quantity SMALLINT
+    SET @order_id = (SELECT id
+                     FROM inserted)
+    IF (SELECT delivery_date
+        FROM inserted) IS NOT NULL AND (SELECT delivery_date
+                                        FROM deleted) IS NULL
+      BEGIN
+        DECLARE delivered_prods CURSOR FOR (SELECT
+                                              product_id,
+                                              quantity,
+                                              location_id
+                                            FROM Warehouse_order_details AS OD
+                                              JOIN inserted ON @order_id = OD.warehouse_order_id)
+          FOR READ ONLY
+        OPEN delivered_prods
+        FETCH delivered_prods
+        INTO @product_id, @quantity, @location_id
+        WHILE @@fetch_status = 0
+          BEGIN
+            EXEC changeStock @product_id, @quantity, @location_id
+            FETCH delivered_prods
+            INTO @product_id, @quantity, @location_id
+          END
+        CLOSE delivered_prods
+        DEALLOCATE delivered_prods
+      END
+  END
+GO
+
+CREATE TRIGGER getFromWarehouseUpdate
+  ON Client_orders
+AFTER UPDATE AS
+  BEGIN
+    DECLARE @order_id INT
+    DECLARE @spot_id INT
+    DECLARE @product_id INT
+    DECLARE @location_id INT
+    DECLARE @quantity SMALLINT
+    SET @order_id = (SELECT id
+                     FROM inserted)
+    SET @spot_id = (SELECT spot_id
+                    FROM inserted)
+    IF (SELECT payment_time
+        FROM inserted) IS NOT NULL AND (SELECT payment_time
+                                        FROM deleted) IS NULL
+      BEGIN
+        DECLARE sold_prods CURSOR FOR (SELECT
+                                         products_sold_id,
+                                         quantity,
+                                         location_id
+                                       FROM Client_order_details AS OD
+                                         JOIN inserted ON @order_id = OD.client_order_id
+                                         JOIN Spots AS S ON S.id = @spot_id)
+          FOR READ ONLY
+        OPEN sold_prods
+        FETCH sold_prods
+        INTO @product_id, @quantity, @location_id
+        WHILE @@fetch_status = 0
+          BEGIN
+            SET @quantity = -@quantity
+            DECLARE @receipt_id INT
+            SET @receipt_id = (SELECT receipt_id
+                               FROM ProductsSold
+                               WHERE id = @product_id)
+            IF @receipt_id IS NULL
+              BEGIN
+                EXEC changeStock @product_id, @quantity, @location_id
+              END
+            ELSE
+              BEGIN
+                DECLARE @ingredient_id INT
+                DECLARE @ingredient_quantity INT
+                DECLARE @final_change INT
+                DECLARE ingredients CURSOR FOR (SELECT
+                                                  ingredient_id,
+                                                  quantity
+                                                FROM Ingredients
+                                                WHERE receipt_id = @receipt_id)
+                  FOR READ ONLY
+                OPEN ingredients
+                FETCH ingredients
+                INTO @ingredient_id, @ingredient_quantity
+                WHILE @@fetch_status = 0
+                  BEGIN
+                    SET @final_change = (@quantity) * (@ingredient_quantity)
+                    EXEC changeStock @ingredient_id, @final_change, @location_id
+                    FETCH ingredients
+                    INTO @ingredient_id, @ingredient_quantity
+                  END
+                CLOSE ingredients
+                DEALLOCATE ingredients
+              END
+            FETCH sold_prods
+            INTO @product_id, @quantity, @location_id
+          END
+        CLOSE sold_prods
+        DEALLOCATE sold_prods
+      END
+  END
+GO

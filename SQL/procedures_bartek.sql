@@ -300,3 +300,41 @@ AS BEGIN
 END
 GO
 
+-----------------warehouse----------------\
+
+CREATE PROCEDURE markDelivered
+    @id INT
+AS BEGIN
+  UPDATE Warehouse_orders
+  SET delivery_date = getdate()
+  WHERE id = @id
+END
+GO
+
+CREATE PROCEDURE markPaid
+    @id INT
+AS BEGIN
+  UPDATE Client_orders
+  SET payment_time = getdate()
+  WHERE id = @id
+END
+GO
+
+CREATE PROCEDURE changeStock
+    @product_id      INT,
+    @quantity_change SMALLINT,
+    @location_id     INT
+AS BEGIN
+  IF NOT exists(SELECT *
+                FROM Warehouse
+                WHERE product_in_stock_id = @product_id AND location_id = @location_id)
+    BEGIN
+      EXEC addToWarehouse @location_id, @product_id, @quantity_change
+    END
+  ELSE
+    BEGIN
+      EXEC updateQuantityInWarehouse @location_id, @product_id, @quantity_change
+    END
+
+END
+GO
