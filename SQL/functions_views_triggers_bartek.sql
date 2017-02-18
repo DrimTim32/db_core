@@ -122,3 +122,8 @@ CREATE VIEW productsLastPricesWithName AS
                         WHERE
                           P2.product_id = Prices.product_id)
 GO
+
+
+-----------------TRIGGERS-------------------
+
+CREATE TRIGGER logUsage

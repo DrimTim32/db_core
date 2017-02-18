@@ -288,3 +288,15 @@ AS BEGIN
     (@priduct_id, GETDATE(), @new_price)
 END
 GO
+
+--------------------LOG--------------------
+
+CREATE PROCEDURE logLogin
+    @username   NVARCHAR(63),
+    @login_date DATETIME
+AS BEGIN
+  INSERT INTO LoginLog (username, login_date) VALUES
+    (@username, @login_date)
+END
+GO
+
