@@ -558,29 +558,3 @@ AS
       DELETE FROM Client_orders
       WHERE id = @client_order_id
   END
--- -- T_02
--- GO
--- CREATE TRIGGER insertClientOrderDetailWithPrice
---   ON Client_order_details
--- INSTEAD OF INSERT
--- AS
---   BEGIN
---     DECLARE @product_id INT
---     SET @product_id = (SELECT products_sold_id
---                        FROM inserted)
---     DECLARE @recent_change_date DATE
---     SET @recent_change_date = (SELECT period_start
---                                FROM Prices
---                                WHERE product_id = @product_id)
---     DECLARE @price MONEY
---     SET @price = (SELECT price
---                   FROM Prices
---                   WHERE product_id = @product_id AND period_start = @recent_change_date)
---     INSERT INTO Client_order_details
---       SELECT
---         client_order_id,
---         @product_id,
---         quantity
---       FROM inserted
---   END
--- GO
