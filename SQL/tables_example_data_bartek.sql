@@ -55,8 +55,8 @@ INSERT INTO Receipts (description) VALUES
   ('receptura na piwo z sokiem')
 
 INSERT INTO Ingredients (receipt_id, ingredient_id, quantity) VALUES
-  (1, 3, 20),
-  (1, 4, 480)
+  (1, 3, 1),
+  (1, 4, 1)
 
 INSERT INTO Products (category_id, unit_id, tax_id, name) VALUES
   (2, 5, 1, 'TYSKIE Z SOKIEM')
