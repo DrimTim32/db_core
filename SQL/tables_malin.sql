@@ -8,7 +8,7 @@ CREATE TABLE EmployePermissions(
 
 CREATE TABLE Users (
   id       INT PRIMARY KEY IDENTITY (1, 1),
-  username      NVARCHAR(64)  NOT NULL,
+  username      NVARCHAR(64)  UNIQUE NOT NULL,
   password      VARBINARY(20) NOT NULL,
   password_salt CHAR(25)      NOT NULL,
   name     NVARCHAR(64) NOT NULL,
