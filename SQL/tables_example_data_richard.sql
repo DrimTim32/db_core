@@ -51,13 +51,7 @@ INSERT INTO Client_orders (spot_id, employee_id, order_time, payment_time) VALUE
 
 
 INSERT INTO Client_order_details (client_order_id, products_sold_id, quantity) VALUES
-  (1, 5, 1)
-
-INSERT INTO Client_order_details (client_order_id, products_sold_id, quantity) VALUES
-  (1, 4, 10)
-
-INSERT INTO Client_order_details (client_order_id, products_sold_id, quantity) VALUES
-  (2, 5, 1)
-
-INSERT INTO Client_order_details (client_order_id, products_sold_id, quantity) VALUES
+  (1, 5, 1),
+  (1, 4, 10),
+  (2, 5, 1),
   (2, 6, 3)

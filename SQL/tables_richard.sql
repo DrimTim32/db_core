@@ -68,7 +68,8 @@ CREATE TABLE Warehouse_order_details -- OK
   CONSTRAINT chk_MoneyWOD CHECK (unit_price >= 0),
   CONSTRAINT chk_QuantityWOD CHECK (quantity >= 0),
   PRIMARY KEY (warehouse_order_id, product_id),
-  FOREIGN KEY (warehouse_order_id) REFERENCES Warehouse_orders (id),
+  FOREIGN KEY (warehouse_order_id) REFERENCES Warehouse_orders (id)
+    ON DELETE CASCADE,
   FOREIGN KEY (product_id) REFERENCES Products (id) -- Products = tabela Bartka (artykuly spozywcze; spr. zgodno?? nazwy)
 )
 
@@ -101,7 +102,8 @@ CREATE TABLE Client_order_details -- OK
   quantity         SMALLINT NOT NULL,
   CONSTRAINT chk_QuantityCOD CHECK (quantity >= 0),
   PRIMARY KEY (client_order_id, products_sold_id),
-  FOREIGN KEY (client_order_id) REFERENCES Client_orders (id),
+  FOREIGN KEY (client_order_id) REFERENCES Client_orders (id)
+    ON DELETE CASCADE,
   FOREIGN KEY (products_sold_id) REFERENCES ProductsSold (id)
 )
 

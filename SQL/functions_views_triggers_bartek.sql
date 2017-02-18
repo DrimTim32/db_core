@@ -131,24 +131,38 @@ CREATE TRIGGER logUsage
 AFTER INSERT
 AS
   BEGIN
+    DECLARE @order_id INT
     DECLARE @product_id INT
-    SET @product_id = (SELECT products_sold_id
-                       FROM inserted)
-    DECLARE @order_date DATE
-    SET @order_date = convert(DATE, (SELECT order_time
-                                     FROM inserted
-                                       JOIN Client_orders ON (SELECT client_order_id
-                                                              FROM inserted) = Client_orders.id))
-    IF NOT exists(SELECT *
-                  FROM ProductsUsage
-                  WHERE product_id = @product_id AND date = @order_date)
+    DECLARE @quantity SMALLINT
+    DECLARE inserted_cur CURSOR FOR SELECT
+                                      client_order_id,
+                                      products_sold_id,
+                                      quantity
+                                    FROM inserted
+      FOR READ ONLY
+    OPEN inserted_cur
+    FETCH inserted_cur
+    INTO @order_id, @product_id, @quantity
+    WHILE @@fetch_status = 0
       BEGIN
-        INSERT INTO ProductsUsage (product_id, date, quantity) VALUES
-          (@product_id, @order_date, 0)
+        DECLARE @order_date DATE
+        SET @order_date = convert(DATE, (SELECT order_time
+                                         FROM Client_orders
+                                         WHERE @order_id = Client_orders.id))
+        IF NOT exists(SELECT *
+                      FROM ProductsUsage
+                      WHERE product_id = @product_id AND date = @order_date)
+          BEGIN
+            INSERT INTO ProductsUsage (product_id, date, quantity) VALUES
+              (@product_id, @order_date, 0)
+          END
+        UPDATE ProductsUsage
+        SET quantity = quantity + @quantity
+        WHERE product_id = @product_id AND date = @order_date
+        FETCH inserted_cur
+        INTO @order_id, @product_id, @quantity
       END
-    UPDATE ProductsUsage
-    SET quantity = quantity + (SELECT quantity
-                               FROM inserted)
-    WHERE product_id = @product_id AND date = @order_date
+    CLOSE inserted_cur
+    DEALLOCATE inserted_cur
   END
 GO

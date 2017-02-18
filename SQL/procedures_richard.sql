@@ -376,23 +376,6 @@ AS
       WHERE id = @id
   END
 
--- TRIGGERS 
---T_01 
-GO
-CREATE TRIGGER deleteWarehouseOrderDetailsWhenRemovingOrder
-  ON Warehouse_orders
-INSTEAD OF DELETE
-AS
-  BEGIN
-    DECLARE @id INT
-    SET @id = (SELECT id
-               FROM deleted)
-    DELETE FROM Warehouse_order_details
-    WHERE warehouse_order_id = @id
-
-    DELETE FROM Warehouse_orders
-    WHERE id = @id
-  END
 --------------------CLIENT ORDERS--------------------
 -- ADD
 GO
@@ -447,23 +430,6 @@ AS
       WHERE id = @id
   END
 
--- TRIGGERS
--- T_01
-GO
-CREATE TRIGGER deleteClientOrderDetailsWhenRemovingOrder
-  ON Client_orders
-INSTEAD OF DELETE
-AS
-  BEGIN
-    DECLARE @id INT
-    SET @id = (SELECT id
-               FROM deleted)
-    DELETE FROM Client_orders_details
-    WHERE client_order_id = @id
-
-    DELETE FROM Client_orders
-    WHERE id = @id
-  END
 --------------------WAREHOUSE ORDER DETAILS--------------------
 -- ADD
 GO
@@ -592,29 +558,29 @@ AS
       DELETE FROM Client_orders
       WHERE id = @client_order_id
   END
--- T_02
-GO
-CREATE TRIGGER insertClientOrderDetailWithPrice
-  ON Client_order_details
-INSTEAD OF INSERT
-AS
-  BEGIN
-    DECLARE @product_id INT
-    SET @product_id = (SELECT products_sold_id
-                       FROM inserted)
-    DECLARE @recent_change_date DATE
-    SET @recent_change_date = (SELECT period_start
-                               FROM Prices
-                               WHERE product_id = @product_id)
-    DECLARE @price MONEY
-    SET @price = (SELECT price
-                  FROM Prices
-                  WHERE product_id = @product_id AND period_start = @recent_change_date)
-    INSERT INTO Client_order_details
-      SELECT
-        client_order_id,
-        @product_id,
-        quantity
-      FROM inserted
-  END
-GO
+-- -- T_02
+-- GO
+-- CREATE TRIGGER insertClientOrderDetailWithPrice
+--   ON Client_order_details
+-- INSTEAD OF INSERT
+-- AS
+--   BEGIN
+--     DECLARE @product_id INT
+--     SET @product_id = (SELECT products_sold_id
+--                        FROM inserted)
+--     DECLARE @recent_change_date DATE
+--     SET @recent_change_date = (SELECT period_start
+--                                FROM Prices
+--                                WHERE product_id = @product_id)
+--     DECLARE @price MONEY
+--     SET @price = (SELECT price
+--                   FROM Prices
+--                   WHERE product_id = @product_id AND period_start = @recent_change_date)
+--     INSERT INTO Client_order_details
+--       SELECT
+--         client_order_id,
+--         @product_id,
+--         quantity
+--       FROM inserted
+--   END
+-- GO
