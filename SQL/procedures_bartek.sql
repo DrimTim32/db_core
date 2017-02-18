@@ -199,8 +199,10 @@ CREATE PROCEDURE addProduct
 AS BEGIN
   INSERT INTO Products (category_id, unit_id, tax_id, name) VALUES
     (@category_id, @unit_id, @tax_id, @name)
+  SELECT IDENT_CURRENT('Products') AS RETURNVALUE
 END
 GO
+
 
 CREATE PROCEDURE updateProduct
     @id           INT,

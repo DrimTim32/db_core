@@ -126,5 +126,8 @@ AS
     CO.username,
     CO.user_name,
     CO.surname
-  FROM Client_order_details COD, Client_orders_pretty CO, productSimple P, productsLastPrices PLP
-  WHERE COD.client_order_id = CO.id AND COD.products_sold_id = P.id AND P.id = PLP.product_id
+  FROM Client_order_details COD
+    JOIN Client_orders_pretty CO ON COD.client_order_id = CO.id
+    JOIN productSimple P ON COD.products_sold_id = P.id
+    CROSS APPLY productsHistoryPrices(CO.order_time) AS PLP
+  WHERE P.id = PLP.product_id
