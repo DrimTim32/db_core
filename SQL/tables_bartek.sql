@@ -70,7 +70,7 @@ CREATE TABLE Prices (
 
 CREATE TABLE LoginLog (
   username   NVARCHAR(64) NOT NULL FOREIGN KEY REFERENCES Users (username),
-  login_date DATE
+  login_time DATETIME
 )
 
 

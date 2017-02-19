@@ -1,179 +1,227 @@
-use BarProject
+USE BarProject
 
 --LOCATIONS
-go
-create function getLocation (
-	@id int
+GO
+CREATE FUNCTION getLocation(
+  @id INT
 )
-returns table
-as
-	return (select name, address, city, postal_code, country, phone from Locations
-			where id = @id)
+  RETURNS TABLE
+AS
+  RETURN (SELECT
+            name,
+            address,
+            city,
+            postal_code,
+            country,
+            phone
+          FROM Locations
+          WHERE id = @id)
 
 
 --WAREHOUSE
-go
-create function getWarehouseProductQuantity (
-	@location_id int,
-	@product_in_stock_id int
+GO
+CREATE FUNCTION getWarehouseProductQuantity(
+  @location_id         INT,
+  @product_in_stock_id INT
 )
-returns smallint
-as
-begin
-	declare @quantity smallint
-	set @quantity = (select quantity from Warehouse
-			where location_id = @location_id and product_in_stock_id = @product_in_stock_id)
-	return @quantity
-end
+  RETURNS SMALLINT
+AS
+  BEGIN
+    DECLARE @quantity SMALLINT
+    SET @quantity = (SELECT quantity
+                     FROM Warehouse
+                     WHERE location_id = @location_id AND product_in_stock_id = @product_in_stock_id)
+    RETURN @quantity
+  END
 
 
-go
-create function getWarehouseProduct (
-	@product_in_stock_id int
+GO
+CREATE FUNCTION getWarehouseProduct(
+  @product_in_stock_id INT
 )
-returns table
-as
-	return (select * from Warehouse_pretty
-			where product_id = @product_in_stock_id)
+  RETURNS TABLE
+AS
+  RETURN (SELECT *
+          FROM Warehouse_pretty
+          WHERE product_id = @product_in_stock_id)
 
 
 
 --SUPPLIERS
-go
-create function getSupplier (
-	@id int
+GO
+CREATE FUNCTION getSupplier(
+  @id INT
 )
-returns table
-as
-	return (select name, address, city, postal_code, country, contact_name, phone, fax, website from Suppliers
-			where id = @id)
+  RETURNS TABLE
+AS
+  RETURN (SELECT
+            name,
+            address,
+            city,
+            postal_code,
+            country,
+            contact_name,
+            phone,
+            fax,
+            website
+          FROM Suppliers
+          WHERE id = @id)
 
 
 --WAREHOUSE_ORDERS
-go
-create function getWarehouseOrder (
-	@id int
+GO
+CREATE FUNCTION getWarehouseOrder(
+  @id INT
 )
-returns table
-as
-	return (select employee_id, supplier_id, location_id, order_date, required_date, delivery_date from Warehouse_orders
-			where id = @id)
+  RETURNS TABLE
+AS
+  RETURN (SELECT
+            employee_id,
+            supplier_id,
+            location_id,
+            order_date,
+            required_date,
+            delivery_date
+          FROM Warehouse_orders
+          WHERE id = @id)
 
-go
-create function getWarehouseOrderPretty (
-	@id int
+GO
+CREATE FUNCTION getWarehouseOrderPretty(
+  @id INT
 )
-returns table
-as
-	return (select * from Warehouse_orders_pretty
-			where id = @id)
+  RETURNS TABLE
+AS
+  RETURN (SELECT *
+          FROM Warehouse_orders_pretty
+          WHERE id = @id)
 
 
 --WAREHOUSE_ORDER_DETAILS
-go
-create function getWarehouseOrderDetails (
-	@warehouse_order_id int
+GO
+CREATE FUNCTION getWarehouseOrderDetails(
+  @warehouse_order_id INT
 )
-returns table
-as
-	return (select product_id, unit_price, quantity from Warehouse_order_details
-			where warehouse_order_id = @warehouse_order_id)
+  RETURNS TABLE
+AS
+  RETURN (SELECT
+            product_id,
+            unit_price,
+            quantity
+          FROM Warehouse_order_details
+          WHERE warehouse_order_id = @warehouse_order_id)
 
-go
-create function getWarehouseOrderDetailsPretty (
-	@warehouse_order_id int
+GO
+CREATE FUNCTION getWarehouseOrderDetailsPretty(
+  @warehouse_order_id INT
 )
-returns table
-as
-	return (select name, category_name, unit_price, quantity from Warehouse_order_details_pretty
-			where id = @warehouse_order_id)
+  RETURNS TABLE
+AS
+  RETURN (SELECT
+            name,
+            category_name,
+            unit_price,
+            quantity
+          FROM Warehouse_order_details_pretty
+          WHERE id = @warehouse_order_id)
 
 
-
-go
-create function getWarehouseOrderValue(
-	@warehouse_order_id int
+GO
+CREATE FUNCTION getWarehouseOrderValue(
+  @warehouse_order_id INT
 )
-returns money
-as
-begin
-	declare @result money
-	set @result = (select sum(unit_price * quantity) value from Warehouse_order_details
-			where warehouse_order_id = @warehouse_order_id)
-	return @result
-end
+  RETURNS MONEY
+AS
+  BEGIN
+    DECLARE @result MONEY
+    SET @result = (SELECT sum(unit_price * quantity) value
+                   FROM Warehouse_order_details
+                   WHERE warehouse_order_id = @warehouse_order_id)
+    RETURN @result
+  END
 
 --SPOTS
-go
-create function getSpot (
-	@id int
+GO
+CREATE FUNCTION getSpot(
+  @id INT
 )
-returns NVARCHAR(40)
-as
-begin
-	declare @name NVARCHAR(40)
-	set @name = (select name from Spots
-			where id = @id)
-	return @name
-end
+  RETURNS NVARCHAR(40)
+AS
+  BEGIN
+    DECLARE @name NVARCHAR(40)
+    SET @name = (SELECT name
+                 FROM Spots
+                 WHERE id = @id)
+    RETURN @name
+  END
 
 
 --CLIENT_ORDERS
-go
-create function getClientOrder (
-	@id int
+GO
+CREATE FUNCTION getClientOrder(
+  @id INT
 )
-returns table
-as
-	return (select spot_id, employee_id, order_time, payment_time from Client_orders
-			where id = @id)
+  RETURNS TABLE
+AS
+  RETURN (SELECT
+            spot_id,
+            employee_id,
+            order_time,
+            payment_time
+          FROM Client_orders
+          WHERE id = @id)
 
 
 --CLIENT_ORDER_DETAILS
-go
-create function getClientOrderDetails (
-	@client_order_id int
+GO
+CREATE FUNCTION getClientOrderDetails(
+  @client_order_id INT
 )
-returns table
-as
-	return (select products_sold_id, quantity from Client_order_details
-			where client_order_id = @client_order_id)
+  RETURNS TABLE
+AS
+  RETURN (SELECT
+            products_sold_id,
+            quantity
+          FROM Client_order_details
+          WHERE client_order_id = @client_order_id)
 
-go
-create function getClientOrderValue(
-	@client_order_id int
+GO
+CREATE FUNCTION getClientOrderValue(
+  @client_order_id INT
 )
-returns money
-as
-begin
-	declare @result money
-	set @result =  (select sum(PLP.price * COD.quantity) value 
-			from Client_order_details COD JOIN productsLastPrices PLP on COD.products_sold_id = PLP.product_id
-			where COD.client_order_id = @client_order_id)
-	return @result
-end
+  RETURNS MONEY
+AS
+  BEGIN
+    DECLARE @result MONEY
+    SET @result = (SELECT sum(PLP.price * COD.quantity) value
+                   FROM Client_order_details COD
+                     JOIN productsLastPrices PLP ON COD.products_sold_id = PLP.product_id
+                   WHERE COD.client_order_id = @client_order_id)
+    RETURN @result
+  END
 
 --WORKSTATIONS
-go
-create function getWorkstation (
-	@id int
+GO
+CREATE FUNCTION getWorkstation(
+  @id INT
 )
-returns NVARCHAR(40)
-as
-begin
-	declare @name NVARCHAR(40)
-	set @name = (select name from Workstations
-			where id = @id)
-	return @name
-end
+  RETURNS NVARCHAR(40)
+AS
+  BEGIN
+    DECLARE @name NVARCHAR(40)
+    SET @name = (SELECT name
+                 FROM Workstations
+                 WHERE id = @id)
+    RETURN @name
+  END
 
 --WORKSTATION_RIGHTS
-go
-create function getWorkstationRights (
-	@workstation_id  int
+GO
+CREATE FUNCTION getWorkstationRights(
+  @workstation_id INT
 )
-returns table
-as
+  RETURNS TABLE
+AS
 
-	return (select employe_permissions from Workstation_rights
-			where workstation_id = @workstation_id)
+  RETURN (SELECT employe_permissions
+          FROM Workstation_rights
+          WHERE workstation_id = @workstation_id)

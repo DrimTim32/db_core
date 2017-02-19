@@ -117,7 +117,7 @@ AS BEGIN
   IF @new_name != ''
     BEGIN
       UPDATE Categories
-      SET slug = @new_name
+      SET category_name = @new_name
       WHERE id = @id
     END
   UPDATE Categories
@@ -199,6 +199,8 @@ CREATE PROCEDURE addProduct
 AS BEGIN
   INSERT INTO Products (category_id, unit_id, tax_id, name) VALUES
     (@category_id, @unit_id, @tax_id, @name)
+  SELECT IDENT_CURRENT('Products') AS RETURNVALUE
+  RETURN IDENT_CURRENT('Products')
 END
 GO
 
@@ -286,5 +288,55 @@ CREATE PROCEDURE updatePrice
 AS BEGIN
   INSERT INTO Prices (product_id, period_start, price) VALUES
     (@priduct_id, GETDATE(), @new_price)
+END
+GO
+
+--------------------LOG--------------------
+
+CREATE PROCEDURE logLogin
+    @username   NVARCHAR(63),
+    @login_date DATETIME
+AS BEGIN
+  INSERT INTO LoginLog (username, login_time) VALUES
+    (@username, @login_date)
+END
+GO
+
+-----------------warehouse----------------\
+
+CREATE PROCEDURE markDelivered
+    @id INT
+AS BEGIN
+  UPDATE Warehouse_orders
+  SET delivery_date = getdate()
+  WHERE id = @id
+END
+GO
+
+CREATE PROCEDURE markPaid
+    @id INT
+AS BEGIN
+  UPDATE Client_orders
+  SET payment_time = getdate()
+  WHERE id = @id
+END
+GO
+
+CREATE PROCEDURE changeStock
+    @product_id      INT,
+    @quantity_change SMALLINT,
+    @location_id     INT
+AS BEGIN
+  IF NOT exists(SELECT *
+                FROM Warehouse
+                WHERE product_in_stock_id = @product_id AND location_id = @location_id)
+    BEGIN
+      EXEC addToWarehouse @location_id, @product_id, @quantity_change
+    END
+  ELSE
+    BEGIN
+      EXEC updateQuantityInWarehouse @location_id, @product_id, @quantity_change
+    END
+
 END
 GO
