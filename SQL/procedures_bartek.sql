@@ -161,7 +161,7 @@ END
 GO
 
 
-CREATE PROCEDURE udpateIngredient
+CREATE PROCEDURE updateIngredient
     @recipe_id     INT,
     @ingredient_id INT,
     @new_quantity  FLOAT
