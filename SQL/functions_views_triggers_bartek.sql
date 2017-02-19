@@ -3,10 +3,11 @@ GO
 
 CREATE FUNCTION productsByCategory(@category_id INT)
   RETURNS TABLE AS RETURN (SELECT
+                             id,
                              name,
-                             tax_id,
-                             unit_id
+                             price
                            FROM Products
+                             JOIN productsLastPrices ON id = product_id
                            WHERE category_id = @category_id)
 GO
 
@@ -250,8 +251,8 @@ AFTER UPDATE AS
             SET @quantity = -@quantity
             DECLARE @recipe_id INT
             SET @recipe_id = (SELECT recipe_id
-                               FROM ProductsSold
-                               WHERE id = @product_id)
+                              FROM ProductsSold
+                              WHERE id = @product_id)
             IF @recipe_id IS NULL
               BEGIN
                 EXEC changeStock @product_id, @quantity, @location_id
