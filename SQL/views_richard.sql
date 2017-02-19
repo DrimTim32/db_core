@@ -29,6 +29,10 @@ AS
     W.order_date,
     W.required_date,
     W.delivery_date,
+    (SELECT sum(WOD.unit_price * WOD.quantity)
+     FROM Warehouse_order_details WOD
+     WHERE WOD.warehouse_order_id = W.id
+    )              value,
     U.username     employee_username,
     U.name         employee_name,
     U.surname      employee_surname,
@@ -95,6 +99,11 @@ AS
     CO.id,
     CO.order_time,
     CO.payment_time,
+    (SELECT sum(PLP.price * COD.quantity)
+     FROM Client_order_details COD
+       CROSS APPLY productsHistoryPrices(CO.order_time) AS PLP
+     WHERE COD.products_sold_id = PLP.product_id AND COD.client_order_id = CO.id
+    )      value,
     CO.spot_id,
     S.name spot_name,
     S.location_id,

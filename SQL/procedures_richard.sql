@@ -202,18 +202,18 @@ AS
 -- REMOVE
 GO
 CREATE PROCEDURE removeWorkstation
-  (@id INT
-  )
+    @id INT
 AS
   BEGIN
-    DELETE FROM Workstation
+    DELETE FROM Workstations
     WHERE id = @id
   END
 -- UPDATE
 GO
 CREATE PROCEDURE updateWorkstation
-  (@id       INT,
-   @new_name NVARCHAR(40)
+  (@id              INT,
+   @new_location_id INT,
+   @new_name        NVARCHAR(40)
   )
 AS
   BEGIN
@@ -221,6 +221,9 @@ AS
       UPDATE Workstations
       SET name = @new_name
       WHERE id = @id
+    UPDATE Workstations
+    SET location_id = @new_location_id
+    WHERE id = @id
   END
 --------------------WAREHOUSE--------------------
 -- ADD to
