@@ -202,18 +202,18 @@ AS
 -- REMOVE
 GO
 CREATE PROCEDURE removeWorkstation
-  (@id INT
-  )
+    @id INT
 AS
   BEGIN
-    DELETE FROM Workstation
+    DELETE FROM Workstations
     WHERE id = @id
   END
 -- UPDATE
 GO
 CREATE PROCEDURE updateWorkstation
-  (@id       INT,
-   @new_name NVARCHAR(40)
+  (@id              INT,
+   @new_location_id INT,
+   @new_name        NVARCHAR(40)
   )
 AS
   BEGIN
@@ -221,10 +221,21 @@ AS
       UPDATE Workstations
       SET name = @new_name
       WHERE id = @id
+    UPDATE Workstations
+    SET location_id = @new_location_id
+    WHERE id = @id
   END
 --------------------WAREHOUSE--------------------
 -- ADD to
-
+/*
+	location_id int not null,
+	product_in_stock_id int not null,
+	quantity smallint not null,
+	primary key (location_id, product_in_stock_id),
+	foreign key (location_id) references Locations(id),
+	foreign key (product_in_stock_id) references Products(id) -- Products = tabela Bartka (artykuly spozywcze; spr. zgodno?? nazwy)
+	on delete cascade
+*/
 GO
 CREATE PROCEDURE addToWarehouse
   (
@@ -417,17 +428,18 @@ GO
 CREATE PROCEDURE addWarehouseOrderDetail -- OK
   (@warehouse_order_id INT,
    @product_id         INT,
+   @unit_price         MONEY,
    @quantity           SMALLINT
   )
 AS
   BEGIN
-    INSERT INTO Warehouse_order_details (warehouse_order_id, product_id, quantity)
-    VALUES (@warehouse_order_id, @product_id, @quantity)
+    INSERT INTO Warehouse_order_details (warehouse_order_id, product_id, unit_price, quantity)
+    VALUES (@warehouse_order_id, @product_id, @unit_price, @quantity)
 
   END
 -- REMOVE
 GO
-CREATE PROCEDURE removeWarehouseOrderDetail  -- OK
+CREATE PROCEDURE removeWarehouseOrderDetail --trigger do usuwania ordera jak nie ma order details�w -- OK
   (@warehouse_order_id INT,
    @product_id         INT
   )
@@ -441,10 +453,15 @@ GO
 CREATE PROCEDURE updateWarehouseOrderDetail
   (@warehouse_order_id INT,
    @product_id         INT,
+   @new_unit_price     MONEY,
    @new_quantity       SMALLINT
   )
 AS
   BEGIN
+    IF @new_unit_price > 0
+      UPDATE Warehouse_order_details
+      SET unit_price = @new_unit_price
+      WHERE warehouse_order_id = @warehouse_order_id AND product_id = @product_id
     IF @new_quantity > 0
       UPDATE Warehouse_order_details
       SET quantity = @new_quantity
@@ -454,7 +471,7 @@ AS
 --------------------CLIENT ORDER DETAILS--------------------
 -- ADD
 GO
-CREATE PROCEDURE addClientOrderDetail  -- OK
+CREATE PROCEDURE addClientOrderDetail --trigger do pobierania aktualnej ceny produktu -- OK
   (@client_order_id  INT,
    @products_sold_id INT,
    @quantity         SMALLINT
@@ -467,7 +484,7 @@ AS
   END
 -- REMOVE
 GO
-CREATE PROCEDURE removeClientOrderDetail -- OK
+CREATE PROCEDURE removeClientOrderDetail --trigger do usuwania ordera jak nie ma order details�w -- OK
   (@client_order_id  INT,
    @products_sold_id INT
   )
