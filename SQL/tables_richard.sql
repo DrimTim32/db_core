@@ -63,9 +63,7 @@ CREATE TABLE Warehouse_order_details -- OK
 (
   warehouse_order_id INT      NOT NULL,
   product_id         INT      NOT NULL,
-  unit_price         MONEY    NOT NULL,
   quantity           SMALLINT NOT NULL,
-  CONSTRAINT chk_MoneyWOD CHECK (unit_price >= 0),
   CONSTRAINT chk_QuantityWOD CHECK (quantity >= 0),
   PRIMARY KEY (warehouse_order_id, product_id),
   FOREIGN KEY (warehouse_order_id) REFERENCES Warehouse_orders (id)

@@ -105,7 +105,6 @@ CREATE FUNCTION getWarehouseOrderDetails(
 AS
   RETURN (SELECT
             product_id,
-            unit_price,
             quantity
           FROM Warehouse_order_details
           WHERE warehouse_order_id = @warehouse_order_id)
@@ -119,7 +118,6 @@ AS
   RETURN (SELECT
             name,
             category_name,
-            unit_price,
             quantity
           FROM Warehouse_order_details_pretty
           WHERE id = @warehouse_order_id)
@@ -133,9 +131,9 @@ CREATE FUNCTION getWarehouseOrderValue(
 AS
   BEGIN
     DECLARE @result MONEY
-    SET @result = (SELECT sum(unit_price * quantity) value
-                   FROM Warehouse_order_details
-                   WHERE warehouse_order_id = @warehouse_order_id)
+    SET @result = (SELECT sum(price * quantity) value
+                   FROM Warehouse_order_details_pretty
+                   WHERE id = @warehouse_order_id)
     RETURN @result
   END
 
@@ -170,6 +168,15 @@ AS
           FROM Client_orders
           WHERE id = @id)
 
+GO
+CREATE FUNCTION getClientOrderPretty(
+  @id INT
+)
+  RETURNS TABLE
+AS
+  RETURN (SELECT *
+          FROM Client_orders_pretty
+          WHERE id = @id)
 
 --CLIENT_ORDER_DETAILS
 GO
@@ -185,6 +192,19 @@ AS
           WHERE client_order_id = @client_order_id)
 
 GO
+CREATE FUNCTION getClientOrderDetailsPretty(
+  @client_order_id INT
+)
+  RETURNS TABLE
+AS
+  RETURN (SELECT
+            product_name,
+            category_name,
+            price,
+            quantity
+          FROM Client_order_details_pretty
+          WHERE id = @client_order_id)
+GO
 CREATE FUNCTION getClientOrderValue(
   @client_order_id INT
 )
@@ -193,9 +213,9 @@ AS
   BEGIN
     DECLARE @result MONEY
     SET @result = (SELECT sum(PLP.price * COD.quantity) value
-                   FROM Client_order_details COD
+                   FROM Client_order_details_pretty COD
                      JOIN productsLastPrices PLP ON COD.products_sold_id = PLP.product_id
-                   WHERE COD.client_order_id = @client_order_id)
+                   WHERE COD.id = @client_order_id)
     RETURN @result
   END
 
