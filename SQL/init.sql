@@ -48,4 +48,9 @@ IF @dd IS NULL
   END
 GO
 
+EXEC addProduct NULL, NULL, NULL, 'hhhhhhh'
+
+SELECT *
+FROM productDetails(6)
+
 

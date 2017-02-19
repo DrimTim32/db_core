@@ -27,9 +27,9 @@ CREATE TABLE Categories (
 
 CREATE TABLE Products (
   id          INT PRIMARY KEY IDENTITY (1, 1),
-  category_id INT FOREIGN KEY REFERENCES Categories (id),
-  unit_id     INT FOREIGN KEY REFERENCES Units (id),
-  tax_id      INT FOREIGN KEY REFERENCES Taxes (id),
+  category_id INT                  NOT NULL FOREIGN KEY REFERENCES Categories (id),
+  unit_id     INT                  NOT NULL FOREIGN KEY REFERENCES Units (id),
+  tax_id      INT                  NOT NULL FOREIGN KEY REFERENCES Taxes (id),
   name        NVARCHAR(128) UNIQUE NOT NULL,
 )
 
@@ -64,7 +64,10 @@ CREATE TABLE Prices (
   product_id   INT FOREIGN KEY REFERENCES ProductsSold (id),
   period_start DATETIME NOT NULL,
   price        MONEY    NOT NULL CHECK (price >= 0),
-  PRIMARY KEY (product_id, period_start)
+  PRIMARY KEY (product_id, period_start),
+  CONSTRAINT fk_price_prod
+  FOREIGN KEY (product_id) REFERENCES ProductsSold (id)
+    ON DELETE CASCADE
 )
 
 
