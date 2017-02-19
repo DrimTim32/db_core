@@ -127,23 +127,23 @@ END
 GO
 
 
---------------------RECEIPTS--------------------
+--------------------RECIPES--------------------
 
-CREATE PROCEDURE addReceipt
+CREATE PROCEDURE addRecipe
     @description NVARCHAR(512)
 AS BEGIN
-  INSERT INTO Receipts (description) VALUES
+  INSERT INTO Recipes (description) VALUES
     (@description)
 END
 GO
 
-CREATE PROCEDURE updateReceipt
+CREATE PROCEDURE updateRecipe
     @id              INT,
     @new_description NVARCHAR(512)
 AS BEGIN
   IF @new_description != ''
     BEGIN
-      UPDATE Receipts
+      UPDATE Recipes
       SET description = @new_description
       WHERE id = @id
     END
@@ -151,41 +151,41 @@ END
 GO
 
 CREATE PROCEDURE addIngredient
-    @receipt_id    INT,
+    @recipe_id     INT,
     @ingredient_id INT,
     @quantity      FLOAT
 AS BEGIN
-  INSERT INTO Ingredients (receipt_id, ingredient_id, quantity) VALUES
-    (@receipt_id, @ingredient_id, @quantity)
+  INSERT INTO Ingredients (recipe_id, ingredient_id, quantity) VALUES
+    (@recipe_id, @ingredient_id, @quantity)
 END
 GO
 
 
 CREATE PROCEDURE udpateIngredient
-    @receipt_id    INT,
+    @recipe_id     INT,
     @ingredient_id INT,
     @new_quantity  FLOAT
 AS BEGIN
   UPDATE Ingredients
   SET quantity = @new_quantity
-  WHERE receipt_id = @receipt_id AND ingredient_id = @ingredient_id
+  WHERE recipe_id = @recipe_id AND ingredient_id = @ingredient_id
 END
 GO
 
-CREATE PROCEDURE removeReceipt
+CREATE PROCEDURE removeRecipe
     @id INT
 AS BEGIN
-  DELETE FROM Receipts
+  DELETE FROM Recipes
   WHERE id = @id
 END
 GO
 
 CREATE PROCEDURE removeIngredient
-    @receipt_id    INT,
+    @recipe_id     INT,
     @ingredient_id INT
 AS BEGIN
   DELETE FROM Ingredients
-  WHERE ingredient_id = @ingredient_id AND receipt_id = @receipt_id
+  WHERE ingredient_id = @ingredient_id AND recipe_id = @recipe_id
 END
 GO
 
@@ -199,6 +199,8 @@ CREATE PROCEDURE addProduct
 AS BEGIN
   INSERT INTO Products (category_id, unit_id, tax_id, name) VALUES
     (@category_id, @unit_id, @tax_id, @name)
+  SELECT IDENT_CURRENT('Products') AS RETURNVALUE
+  RETURN IDENT_CURRENT('Products')
 END
 GO
 
@@ -222,12 +224,12 @@ AS BEGIN
 END
 GO
 
-CREATE PROCEDURE changeReceipt
-    @product_id  INT,
-    @new_receipt INT
+CREATE PROCEDURE changeRecipe
+    @product_id INT,
+    @new_recipe INT
 AS BEGIN
   UPDATE ProductsSold
-  SET receipt_id = @new_receipt
+  SET recipe_id = @new_recipe
   WHERE id = @product_id
 END
 GO
@@ -237,7 +239,7 @@ CREATE PROCEDURE addStoredProduct
 AS BEGIN
   IF NOT EXISTS(SELECT *
                 FROM ProductsSold
-                WHERE id = @product_id AND receipt_id IS NOT NULL)
+                WHERE id = @product_id AND recipe_id IS NOT NULL)
     BEGIN
       INSERT INTO ProductsStored (id) VALUES
         (@product_id)
@@ -247,11 +249,11 @@ GO
 
 CREATE PROCEDURE addSoldProduct
     @product_id INT,
-    @receipt_id INT
+    @recipe_id  INT
 AS BEGIN
   BEGIN
-    INSERT INTO ProductsSold (id, receipt_id) VALUES
-      (@product_id, @receipt_id)
+    INSERT INTO ProductsSold (id, recipe_id) VALUES
+      (@product_id, @recipe_id)
   END
 END
 GO
@@ -300,7 +302,7 @@ AS BEGIN
 END
 GO
 
------------------warehouse----------------\
+-----------------WAREHOUSE----------------\
 
 CREATE PROCEDURE markDelivered
     @id INT

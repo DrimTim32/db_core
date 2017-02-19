@@ -3,22 +3,23 @@ GO
 
 CREATE FUNCTION productsByCategory(@category_id INT)
   RETURNS TABLE AS RETURN (SELECT
+                             id,
                              name,
-                             tax_id,
-                             unit_id
+                             price
                            FROM Products
+                             JOIN productsLastPrices ON id = product_id
                            WHERE category_id = @category_id)
 GO
 
 
-CREATE FUNCTION receiptDetails(@receipt_id INT)
+CREATE FUNCTION recipeDetails(@recipe_id INT)
   RETURNS TABLE AS RETURN (SELECT
-                             receipt_id,
+                             recipe_id,
                              ingredient_id,
                              quantity
                            FROM Ingredients AS I
-                             JOIN Receipts AS R ON I.receipt_id = R.id
-                           WHERE receipt_id = @receipt_id)
+                             JOIN Recipes AS R ON I.recipe_id = R.id
+                           WHERE recipe_id = @recipe_id)
 GO
 
 CREATE FUNCTION productDetails(@product_id INT)
@@ -51,7 +52,7 @@ CREATE FUNCTION soldProductDetails(@product_id INT)
                              tax_id,
                              tax_name,
                              tax_value,
-                             receipt_id,
+                             recipe_id,
                              period_start,
                              price
                            FROM ProductsSold AS PRS
@@ -78,6 +79,20 @@ CREATE FUNCTION pricesHistory(@product_id INT)
                              period_start
                            FROM Prices
                            WHERE product_id = @product_id)
+GO
+
+CREATE FUNCTION productsHistoryPrices(@date DATE)
+  RETURNS TABLE AS RETURN (
+  SELECT
+    product_id,
+    price,
+    period_start
+  FROM ProductsSold AS P
+    JOIN Prices ON P.id = Prices.product_id
+  WHERE period_start = (SELECT MAX(period_start)
+                        FROM prices AS P2
+                        WHERE P2.product_id = Prices.product_id AND P2.period_start < @date)
+)
 GO
 
 CREATE VIEW productSimple AS
@@ -234,11 +249,11 @@ AFTER UPDATE AS
         WHILE @@fetch_status = 0
           BEGIN
             SET @quantity = -@quantity
-            DECLARE @receipt_id INT
-            SET @receipt_id = (SELECT receipt_id
-                               FROM ProductsSold
-                               WHERE id = @product_id)
-            IF @receipt_id IS NULL
+            DECLARE @recipe_id INT
+            SET @recipe_id = (SELECT recipe_id
+                              FROM ProductsSold
+                              WHERE id = @product_id)
+            IF @recipe_id IS NULL
               BEGIN
                 EXEC changeStock @product_id, @quantity, @location_id
               END
@@ -251,7 +266,7 @@ AFTER UPDATE AS
                                                   ingredient_id,
                                                   quantity
                                                 FROM Ingredients
-                                                WHERE receipt_id = @receipt_id)
+                                                WHERE recipe_id = @recipe_id)
                   FOR READ ONLY
                 OPEN ingredients
                 FETCH ingredients

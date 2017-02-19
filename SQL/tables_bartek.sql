@@ -40,24 +40,24 @@ CREATE TABLE ProductsStored (
     ON DELETE CASCADE
 )
 
-CREATE TABLE Receipts (
+CREATE TABLE Recipes (
   id          INT PRIMARY KEY IDENTITY (1, 1),
   description NVARCHAR(512)
 )
 
 CREATE TABLE ProductsSold (
-  id         INT PRIMARY KEY,
-  receipt_id INT FOREIGN KEY REFERENCES Receipts (id),
+  id        INT PRIMARY KEY,
+  recipe_id INT FOREIGN KEY REFERENCES Recipes (id),
   CONSTRAINT fk_sold_base_prod
   FOREIGN KEY (id) REFERENCES Products (id)
     ON DELETE CASCADE
 )
 
 CREATE TABLE Ingredients (
-  receipt_id    INT FOREIGN KEY REFERENCES Receipts (id),
+  recipe_id     INT FOREIGN KEY REFERENCES Recipes (id),
   ingredient_id INT FOREIGN KEY REFERENCES ProductsStored (id),
   quantity      FLOAT NOT NULL CHECK (quantity >= 0),
-  PRIMARY KEY (receipt_id, ingredient_id)
+  PRIMARY KEY (recipe_id, ingredient_id)
 )
 
 CREATE TABLE Prices (

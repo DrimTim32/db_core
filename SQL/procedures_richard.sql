@@ -202,18 +202,18 @@ AS
 -- REMOVE
 GO
 CREATE PROCEDURE removeWorkstation
-  (@id INT
-  )
+    @id INT
 AS
   BEGIN
-    DELETE FROM Workstation
+    DELETE FROM Workstations
     WHERE id = @id
   END
 -- UPDATE
 GO
 CREATE PROCEDURE updateWorkstation
-  (@id       INT,
-   @new_name NVARCHAR(40)
+  (@id              INT,
+   @new_location_id INT,
+   @new_name        NVARCHAR(40)
   )
 AS
   BEGIN
@@ -221,6 +221,9 @@ AS
       UPDATE Workstations
       SET name = @new_name
       WHERE id = @id
+    UPDATE Workstations
+    SET location_id = @new_location_id
+    WHERE id = @id
   END
 --------------------WAREHOUSE--------------------
 -- ADD to
@@ -229,7 +232,7 @@ AS
 	product_in_stock_id int not null,
 	quantity smallint not null,
 	primary key (location_id, product_in_stock_id),
-	foreign key (location_id) references Locations(id), 
+	foreign key (location_id) references Locations(id),
 	foreign key (product_in_stock_id) references Products(id) -- Products = tabela Bartka (artykuly spozywcze; spr. zgodno?? nazwy)
 	on delete cascade
 */
@@ -272,19 +275,8 @@ AS
     WHERE location_id = @location_id
           AND product_in_stock_id = @product_in_stock_id
 
-    --pasowa?by tutaj trigger, kt�ry po updacie sprawdza czy quantity jest = 0 i je?li tak to usuwa dany wiersz
   END
 GO
--- TRIGGERS 
---T_01 usuwa wiersze, ktore po update maja quantity 0
-CREATE TRIGGER checkQuantityAfterWarehouseUpdate
-  ON Warehouse
-AFTER UPDATE
-AS
-  BEGIN
-    DELETE FROM Warehouse
-    WHERE quantity = 0
-  END
 
 --------------------WORKSTATION RIGHTS--------------------
 -- ADD
@@ -476,27 +468,6 @@ AS
       WHERE warehouse_order_id = @warehouse_order_id AND product_id = @product_id
   END
 
--- TRIGGERS
--- T_01
-GO
-CREATE TRIGGER checkNumberOfWarehouseOrderDetails
-  ON Warehouse_order_details
-AFTER DELETE
-AS
-  BEGIN
-    DECLARE @warehouse_order_id INT
-    DECLARE @product_id INT
-    SET @warehouse_order_id = (SELECT warehouse_order_id
-                               FROM deleted)
-    SET @product_id = (SELECT product_id
-                       FROM deleted)
-
-    IF NOT exists(SELECT *
-                  FROM Warehouse_order_details
-                  WHERE warehouse_order_id = @warehouse_order_id AND product_id = @product_id)
-      DELETE FROM Warehouse_orders
-      WHERE id = @warehouse_order_id
-  END
 --------------------CLIENT ORDER DETAILS--------------------
 -- ADD
 GO
@@ -535,26 +506,4 @@ AS
       UPDATE Client_order_details
       SET quantity = @new_quantity
       WHERE client_order_id = @client_order_id AND products_sold_id = @products_sold_id
-  END
-
--- TRIGGERS
--- T_01
-GO
-CREATE TRIGGER checkNumberOfClientOrderDetails
-  ON Client_order_details
-AFTER DELETE
-AS
-  BEGIN
-    DECLARE @client_order_id INT
-    DECLARE @products_sold_id INT
-    SET @client_order_id = (SELECT client_order_id
-                            FROM deleted)
-    SET @products_sold_id = (SELECT products_sold_id
-                             FROM deleted)
-
-    IF NOT exists(SELECT *
-                  FROM Client_order_details
-                  WHERE client_order_id = @client_order_id AND products_sold_id = @products_sold_id)
-      DELETE FROM Client_orders
-      WHERE id = @client_order_id
   END

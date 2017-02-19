@@ -119,7 +119,7 @@ AS
   RETURN (SELECT
             name,
             category_name,
-            unit_price,
+            purchase_price,
             quantity
           FROM Warehouse_order_details_pretty
           WHERE id = @warehouse_order_id)

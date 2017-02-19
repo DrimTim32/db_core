@@ -9,6 +9,7 @@ VALUES
   (N'Cook', 2),
   (N'Waitresss', 1),
   (N'NoUser', 0)
+GO
 
 DECLARE @return_value INT
 
