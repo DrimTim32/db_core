@@ -16,9 +16,11 @@ CREATE FUNCTION recipeDetails(@recipe_id INT)
   RETURNS TABLE AS RETURN (SELECT
                              recipe_id,
                              ingredient_id,
+                             name AS ingredient_name,
                              quantity
                            FROM Ingredients AS I
                              JOIN Recipes AS R ON I.recipe_id = R.id
+                             JOIN Products AS P ON ingredient_id = P.id
                            WHERE recipe_id = @recipe_id)
 GO
 

@@ -54,3 +54,7 @@ SELECT *
 FROM productDetails(6)
 
 
+SELECT *
+FROM recipeDetails(1)
+
+
