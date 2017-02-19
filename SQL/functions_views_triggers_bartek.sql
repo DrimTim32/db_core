@@ -80,6 +80,20 @@ CREATE FUNCTION pricesHistory(@product_id INT)
                            WHERE product_id = @product_id)
 GO
 
+CREATE FUNCTION productsHistoryPrices(@date DATE)
+  RETURNS TABLE AS RETURN (
+  SELECT
+    product_id,
+    price,
+    period_start
+  FROM ProductsSold AS P
+    JOIN Prices ON P.id = Prices.product_id
+  WHERE period_start = (SELECT MAX(period_start)
+                        FROM prices AS P2
+                        WHERE P2.product_id = Prices.product_id AND P2.period_start < @date)
+)
+GO
+
 CREATE VIEW productSimple AS
   SELECT
     P.id,
