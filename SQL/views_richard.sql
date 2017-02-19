@@ -16,8 +16,9 @@ AS
     L.postal_code location_postal_code,
     L.country     location_country,
     L.phone       location_phone
-  FROM Warehouse W, Locations L, productSimple P
-  WHERE W.location_id = L.id AND W.product_in_stock_id = P.id
+  FROM Warehouse AS W
+    JOIN Locations AS L ON W.location_id = L.id
+    JOIN productSimple AS P ON W.product_in_stock_id = P.id
 
 --WAREHOUSE_ORDERS	
 GO
@@ -46,8 +47,10 @@ AS
     L.postal_code  location_postal_code,
     L.country      location_country,
     L.phone        location_phone
-  FROM Warehouse_orders W, Users U, Suppliers S, Locations L
-  WHERE W.employee_id = U.id AND W.supplier_id = S.id AND W.location_id = L.id
+  FROM Warehouse_orders AS W
+    JOIN Users AS U ON W.employee_id = U.id
+    JOIN Suppliers AS S ON W.supplier_id = S.id
+    JOIN Locations AS L ON W.location_id = L.id
 
 --WAREHOUSE_ORDER_DETAILS
 GO
@@ -63,12 +66,11 @@ AS
     WO.location_name,
     P.name,
     P.category_name,
-    PLP.price,
-    WOD.unit_price,
+    WOD.unit_price purchase_price,
     WOD.quantity
-  FROM Warehouse_order_details WOD, Warehouse_orders_pretty WO, productSimple P, productsLastPrices PLP
-  WHERE WOD.warehouse_order_id = WO.id AND WOD.product_id = P.id AND P.id = PLP.product_id
-
+  FROM Warehouse_order_details AS WOD
+    JOIN Warehouse_orders_pretty AS WO ON WOD.warehouse_order_id = WO.id
+    JOIN productSimple AS P ON WOD.product_id = P.id
 GO
 
 --WORKSTATIONS, WORKSTATIONS_RIGHTS AND LOCATIONS
@@ -81,8 +83,9 @@ AS
     L.id,
     L.name location_name,
     L.city
-  FROM Workstations W, Workstation_rights WR, Locations L
-  WHERE W.id = WR.workstation_id AND L.id = W.location_id
+  FROM Workstations AS W
+    JOIN Workstation_rights AS WR ON W.id = WR.workstation_id
+    JOIN Locations AS L ON L.id = W.location_id
 GO
 
 --CLIENT_ORDERS
@@ -101,8 +104,10 @@ AS
     U.username,
     U.name user_name,
     U.surname
-  FROM Client_orders CO, Spots S, Users U, Locations L
-  WHERE CO.spot_id = S.id AND CO.employee_id = U.id AND S.location_id = L.id
+  FROM Client_orders AS CO
+    JOIN Spots AS S ON CO.spot_id = S.id
+    JOIN Users AS U ON CO.employee_id = U.id
+    JOIN Locations AS L ON S.location_id = L.id
 GO
 
 --CLIENT_ORDER_DETAILS
@@ -126,8 +131,8 @@ AS
     CO.username,
     CO.user_name,
     CO.surname
-  FROM Client_order_details COD
-    JOIN Client_orders_pretty CO ON COD.client_order_id = CO.id
-    JOIN productSimple P ON COD.products_sold_id = P.id
+  FROM Client_order_details AS COD
+    JOIN Client_orders_pretty AS CO ON COD.client_order_id = CO.id
+    JOIN productSimple AS P ON COD.products_sold_id = P.id
     CROSS APPLY productsHistoryPrices(CO.order_time) AS PLP
   WHERE P.id = PLP.product_id
