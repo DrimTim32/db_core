@@ -51,17 +51,17 @@ INSERT INTO Prices (product_id, period_start, price) VALUES
 
 --piwo z sokiem
 
-INSERT INTO Receipts (description) VALUES
+INSERT INTO Recipes (description) VALUES
   ('receptura na piwo z sokiem')
 
-INSERT INTO Ingredients (receipt_id, ingredient_id, quantity) VALUES
+INSERT INTO Ingredients (recipe_id, ingredient_id, quantity) VALUES
   (1, 3, 1),
   (1, 4, 1)
 
 INSERT INTO Products (category_id, unit_id, tax_id, name) VALUES
   (2, 5, 1, 'TYSKIE Z SOKIEM')
 
-INSERT INTO ProductsSold (id, receipt_id) VALUES
+INSERT INTO ProductsSold (id, recipe_id) VALUES
   (6, 1)
 
 INSERT INTO Prices (product_id, period_start, price) VALUES

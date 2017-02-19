@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>DATABASE</ID>
+  <OriginalElement>e629f460-eca9-43cc-af76-a45e44ba6147.SCHEMA:BarProject.dbo</OriginalElement>
+  <nodes>
+    <node x="1005.6436781609196" y="0.0">e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.UnitTypes</node>
+    <node x="359.896551724138" y="942.0">e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Warehouse_order_details</node>
+    <node x="750.375" y="720.0">e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Client_orders</node>
+    <node x="19.75" y="753.5">e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Workstation_rights</node>
+    <node x="1680.0" y="1105.0">e629f460-eca9-43cc-af76-a45e44ba6147.VIEW:BarProject.dbo.Warehouse_pretty</node>
+    <node x="930.375" y="742.0">e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Warehouse</node>
+    <node x="1480.8965517241381" y="476.0">e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Receipts</node>
+    <node x="1389.6206896551726" y="753.0">e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.ProductsSold</node>
+    <node x="843.6206896551723" y="953.0">e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Client_order_details</node>
+    <node x="1119.375" y="742.5">e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.ProductsUsage</node>
+    <node x="245.0" y="1663.0">e629f460-eca9-43cc-af76-a45e44ba6147.VIEW:BarProject.dbo.Workstations_with_rights_pretty</node>
+    <node x="990.0" y="1105.0">e629f460-eca9-43cc-af76-a45e44ba6147.VIEW:BarProject.dbo.Warehouse_order_details_pretty</node>
+    <node x="1381.6206896551726" y="953.0">e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Prices</node>
+    <node x="1335.0" y="1105.0">e629f460-eca9-43cc-af76-a45e44ba6147.VIEW:BarProject.dbo.Client_orders_pretty</node>
+    <node x="1248.6206896551726" y="443.0">e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Products</node>
+    <node x="1555.3706896551726" y="764.5">e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.ProductsStored</node>
+    <node x="1423.3965517241381" y="168.0">e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Taxes</node>
+    <node x="542.0" y="1663.0">e629f460-eca9-43cc-af76-a45e44ba6147.VIEW:BarProject.dbo.productSimple</node>
+    <node x="0.0" y="1663.0">e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.InternalErrors</node>
+    <node x="81.0" y="465.0">e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Workstations</node>
+    <node x="531.875" y="421.0">e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Users</node>
+    <node x="545.0" y="1105.0">e629f460-eca9-43cc-af76-a45e44ba6147.VIEW:BarProject.dbo.Client_order_details_pretty</node>
+    <node x="1263.3965517241381" y="157.0">e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Categories</node>
+    <node x="533.375" y="753.5">e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.LoginLog</node>
+    <node x="440.3893678160921" y="124.0">e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Locations</node>
+    <node x="244.95833333333337" y="698.0">e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Warehouse_orders</node>
+    <node x="0.0" y="1105.0">e629f460-eca9-43cc-af76-a45e44ba6147.VIEW:BarProject.dbo.Warehouse_orders_pretty</node>
+    <node x="810.375" y="465.0">e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Spots</node>
+    <node x="981.0" y="1663.0">e629f460-eca9-43cc-af76-a45e44ba6147.VIEW:BarProject.dbo.productsLastPrices</node>
+    <node x="747.0" y="1663.0">e629f460-eca9-43cc-af76-a45e44ba6147.VIEW:BarProject.dbo.productsLastPricesWithName</node>
+    <node x="250.2643678160921" y="168.0">e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.EmployePermissions</node>
+    <node x="1570.6206896551726" y="953.0">e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Ingredients</node>
+    <node x="985.6436781609196" y="157.0">e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Units</node>
+    <node x="251.875" y="388.0">e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Suppliers</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Warehouse" target="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Products">
+      <point x="42.25" y="-48.0" />
+      <point x="1057.125" y="658.0" />
+      <point x="1264.6206896551726" y="658.0" />
+      <point x="-64.0" y="70.0" />
+    </edge>
+    <edge source="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.LoginLog" target="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Users">
+      <point x="0.0" y="-36.5" />
+      <point x="0.0" y="92.0" />
+    </edge>
+    <edge source="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.ProductsSold" target="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Receipts">
+      <point x="25.5" y="-37.0" />
+      <point x="1466.1206896551726" y="678.0" />
+      <point x="1505.8965517241381" y="678.0" />
+      <point x="-25.0" y="37.0" />
+    </edge>
+    <edge source="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Workstation_rights" target="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Workstations">
+      <point x="43.0" y="-36.5" />
+      <point x="148.75" y="678.0" />
+      <point x="141.0" y="678.0" />
+      <point x="0.0" y="48.0" />
+    </edge>
+    <edge source="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Warehouse_orders" target="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Users">
+      <point x="66.66666666666669" y="-92.0" />
+      <point x="411.62500000000006" y="678.0" />
+      <point x="565.2083333333334" y="678.0" />
+      <point x="-66.66666666666663" y="92.0" />
+    </edge>
+    <edge source="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.ProductsSold" target="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Products">
+      <point x="-25.5" y="-37.0" />
+      <point x="1415.1206896551726" y="678.0" />
+      <point x="1360.6206896551726" y="678.0" />
+      <point x="32.0" y="70.0" />
+    </edge>
+    <edge source="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.ProductsStored" target="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Products">
+      <point x="0.0" y="-25.5" />
+      <point x="1611.8706896551726" y="668.0" />
+      <point x="1392.6206896551726" y="668.0" />
+      <point x="64.0" y="70.0" />
+    </edge>
+    <edge source="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Client_order_details" target="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Client_orders">
+      <point x="-47.999999999999886" y="-48.0" />
+      <point x="891.6206896551724" y="902.0" />
+      <point x="830.375" y="902.0" />
+      <point x="0.0" y="70.0" />
+    </edge>
+    <edge source="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Warehouse_order_details" target="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Products">
+      <point x="60.5" y="-59.0" />
+      <point x="541.396551724138" y="912.0" />
+      <point x="1298.875" y="912.0" />
+      <point x="1298.875" y="678.0" />
+      <point x="1328.6206896551726" y="678.0" />
+      <point x="0.0" y="70.0" />
+    </edge>
+    <edge source="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Products" target="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Units">
+      <point x="-53.33333333333326" y="-70.0" />
+      <point x="1275.287356321839" y="368.0" />
+      <point x="1055.6436781609195" y="368.0" />
+      <point x="0.0" y="59.0" />
+    </edge>
+    <edge source="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Warehouse" target="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Locations">
+      <point x="-42.25" y="-48.0" />
+      <point x="972.625" y="328.0" />
+      <point x="615.3893678160921" y="328.0" />
+      <point x="75.0" y="92.0" />
+    </edge>
+    <edge source="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Workstations" target="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Locations">
+      <point x="0.0" y="-48.0" />
+      <point x="141.0" y="358.0" />
+      <point x="465.3893678160921" y="358.0" />
+      <point x="-75.0" y="92.0" />
+    </edge>
+    <edge source="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Warehouse_orders" target="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Locations">
+      <point x="-66.66666666666674" y="-92.0" />
+      <point x="278.29166666666663" y="678.0" />
+      <point x="241.375" y="678.0" />
+      <point x="241.375" y="368.0" />
+      <point x="515.3893678160921" y="368.0" />
+      <point x="-25.0" y="92.0" />
+    </edge>
+    <edge source="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Products" target="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Categories">
+      <point x="0.0" y="-70.0" />
+      <point x="1328.6206896551726" y="368.0" />
+      <point x="1368.3965517241381" y="368.0" />
+      <point x="35.0" y="59.0" />
+    </edge>
+    <edge source="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Workstation_rights" target="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.EmployePermissions">
+      <point x="-43.0" y="-36.5" />
+      <point x="62.75" y="678.0" />
+      <point x="70.5" y="678.0" />
+      <point x="70.5" y="348.0" />
+      <point x="285.5143678160921" y="348.0" />
+      <point x="-35.25" y="48.0" />
+    </edge>
+    <edge source="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Categories" target="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Categories">
+      <point x="-35.0" y="59.0" />
+      <point x="1298.3965517241381" y="295.0" />
+      <point x="1243.3965517241381" y="295.0" />
+      <point x="1243.3965517241381" y="216.0" />
+      <point x="-70.0" y="-0.0" />
+    </edge>
+    <edge source="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Prices" target="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.ProductsSold">
+      <point x="0.0" y="-48.0" />
+      <point x="25.5" y="37.0" />
+    </edge>
+    <edge source="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Client_order_details" target="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.ProductsSold">
+      <point x="48.000000000000114" y="-48.0" />
+      <point x="987.6206896551724" y="922.0" />
+      <point x="1415.1206896551726" y="922.0" />
+      <point x="-25.5" y="37.0" />
+    </edge>
+    <edge source="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.ProductsUsage" target="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Products">
+      <point x="0.0" y="-47.5" />
+      <point x="1203.875" y="668.0" />
+      <point x="1296.6206896551726" y="668.0" />
+      <point x="-32.0" y="70.0" />
+    </edge>
+    <edge source="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Ingredients" target="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Receipts">
+      <point x="41.25" y="-48.0" />
+      <point x="1694.3706896551726" y="922.0" />
+      <point x="1678.8706896551726" y="922.0" />
+      <point x="1678.8706896551726" y="658.0" />
+      <point x="1555.8965517241381" y="658.0" />
+      <point x="25.0" y="37.0" />
+    </edge>
+    <edge source="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Warehouse_orders" target="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Suppliers">
+      <point x="0.0" y="-92.0" />
+      <point x="344.95833333333337" y="678.0" />
+      <point x="381.875" y="678.0" />
+      <point x="0.0" y="125.0" />
+    </edge>
+    <edge source="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Users" target="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.EmployePermissions">
+      <point x="0.0" y="-92.0" />
+      <point x="631.875" y="348.0" />
+      <point x="356.0143678160921" y="348.0" />
+      <point x="35.25" y="48.0" />
+    </edge>
+    <edge source="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Units" target="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.UnitTypes">
+      <point x="0.0" y="-59.0" />
+      <point x="0.0" y="37.0" />
+    </edge>
+    <edge source="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Ingredients" target="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.ProductsStored">
+      <point x="-41.25" y="-48.0" />
+      <point x="0.0" y="25.5" />
+    </edge>
+    <edge source="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Client_orders" target="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Spots">
+      <point x="40.0" y="-70.0" />
+      <point x="0.0" y="48.0" />
+    </edge>
+    <edge source="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Products" target="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Taxes">
+      <point x="53.33333333333326" y="-70.0" />
+      <point x="1381.9540229885056" y="368.0" />
+      <point x="1483.3965517241381" y="368.0" />
+      <point x="0.0" y="48.0" />
+    </edge>
+    <edge source="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Spots" target="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Locations">
+      <point x="0.0" y="-48.0" />
+      <point x="870.375" y="338.0" />
+      <point x="565.3893678160921" y="338.0" />
+      <point x="25.0" y="92.0" />
+    </edge>
+    <edge source="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Warehouse_order_details" target="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Warehouse_orders">
+      <point x="-60.5" y="-59.0" />
+      <point x="420.396551724138" y="922.0" />
+      <point x="344.95833333333337" y="922.0" />
+      <point x="0.0" y="92.0" />
+    </edge>
+    <edge source="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Client_orders" target="e629f460-eca9-43cc-af76-a45e44ba6147.TABLE:BarProject.dbo.Users">
+      <point x="-40.0" y="-70.0" />
+      <point x="790.375" y="678.0" />
+      <point x="698.5416666666667" y="678.0" />
+      <point x="66.66666666666674" y="92.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.8263183834401181" x="933.5192651795302" y="596.6477991172612" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Key columns</Category>
+    <Category>Columns</Category>
+  </Categories>
+</Diagram>
+
