@@ -62,8 +62,8 @@ CREATE TABLE Ingredients (
 
 CREATE TABLE Prices (
   product_id   INT FOREIGN KEY REFERENCES ProductsSold (id),
-  period_start DATE  NOT NULL,
-  price        MONEY NOT NULL CHECK (price >= 0),
+  period_start DATETIME NOT NULL,
+  price        MONEY    NOT NULL CHECK (price >= 0),
   PRIMARY KEY (product_id, period_start)
 )
 

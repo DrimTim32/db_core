@@ -284,10 +284,17 @@ GO
 
 CREATE PROCEDURE updatePrice
     @priduct_id INT,
-    @new_price  FLOAT
+    @new_price  MONEY
 AS BEGIN
-  INSERT INTO Prices (product_id, period_start, price) VALUES
-    (@priduct_id, GETDATE(), @new_price)
+  DECLARE @current_price MONEY
+  SET @current_price = (SELECT price
+                        FROM productsLastPrices
+                        WHERE product_id = @priduct_id)
+  IF @current_price IS NULL OR @current_price != @new_price
+    BEGIN
+      INSERT INTO Prices (product_id, period_start, price) VALUES
+        (@priduct_id, GETDATE(), @new_price)
+    END
 END
 GO
 

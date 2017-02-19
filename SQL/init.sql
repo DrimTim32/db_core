@@ -30,3 +30,22 @@ FROM Client_order_details COD
   CROSS APPLY productsHistoryPrices('2017-02-18') AS PLP
 WHERE COD.products_sold_id = PLP.product_id
 
+
+SELECT *
+FROM soldProductDetails(7)
+
+
+EXEC updatePrice 6, 14
+GO
+
+DECLARE @dd MONEY
+SET @dd = (SELECT price
+           FROM productsLastPrices
+           WHERE product_id = 6)
+IF @dd IS NULL
+  BEGIN
+    PRINT 'dd'
+  END
+GO
+
+
