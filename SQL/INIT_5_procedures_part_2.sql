@@ -316,7 +316,7 @@ CREATE PROCEDURE markDelivered
     @id INT
 AS BEGIN
   UPDATE Warehouse_orders
-  SET delivery_date = getdate()
+  SET delivery_date = dateadd(HOUR, 2, getdate())
   WHERE id = @id
 END
 GO
@@ -325,7 +325,7 @@ CREATE PROCEDURE markPaid
     @id INT
 AS BEGIN
   UPDATE Client_orders
-  SET payment_time = getdate()
+  SET payment_time = dateadd(HOUR, 2, getdate())
   WHERE id = @id
 END
 GO
