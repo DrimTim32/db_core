@@ -109,7 +109,7 @@ INSERT INTO Workstations (location_id, name) VALUES
 INSERT INTO Workstation_rights (workstation_id, employe_permissions) VALUES
   (1, 1),
   (2, 1),
-  (3, 1),
+  (3, 5),
   (4, 1)
 
 INSERT INTO Warehouse_orders (employee_id, supplier_id, location_id, order_date, required_date, delivery_date) VALUES
