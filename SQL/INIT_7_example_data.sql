@@ -1,3 +1,6 @@
+USE BarProject
+GO
+
 INSERT INTO Categories (slug, category_name, overriding_category) VALUES
   ('NAPOJE', 'NAPOJE', NULL),
   ('PIWO', 'PIWO', NULL),
